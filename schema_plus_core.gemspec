@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'schema_plus_core/version'
+require 'schema_plus/core/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "schema_plus_core"
-  spec.version       = SchemaPlusCore::VERSION
+  spec.version       = SchemaPlus::Core::VERSION
   spec.authors       = ["ronen barzel"]
   spec.email         = ["ronen@barzel.org"]
   spec.summary       = %q{TODO: Write a short summary. Required.}

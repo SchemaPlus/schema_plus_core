@@ -7,7 +7,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'rspec'
 require 'active_record'
-require 'schema_plus_core'
+require 'schema_plus/core'
 require 'schema_dev/rspec'
 
 SchemaDev::Rspec.setup
