@@ -50,10 +50,15 @@ module SchemaPlus
           end
 
           module Reference
+            def self.included(base)
+              base.class_eval do
+                alias_method_chain :add_reference, :schema_monkey
+              end
+            end
 
-            def add_reference(table_name, name, options = {})
+            def add_reference_with_schema_monkey(table_name, name, options = {})
               SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :add, table_name: table_name, column_name: "#{name}_id", type: :reference, options: options.deep_dup) do |env|
-                super env.table_name, env.column_name.sub(/_id$/, ''), env.options
+                add_reference_without_schema_monkey env.table_name, env.column_name.sub(/_id$/, ''), env.options
               end
             end
 

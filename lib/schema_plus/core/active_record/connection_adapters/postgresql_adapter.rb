@@ -21,6 +21,12 @@ module SchemaPlus
               env.index_definitions += super env.table_name, env.query_name
             }.index_definitions
           end
+
+          def tables(query_name=nil)
+            SchemaMonkey::Middleware::Query::Tables.start(connection: self, query_name: query_name, tables: []) { |env|
+              env.tables += super env.query_name
+            }.tables
+          end
         end
       end
     end
