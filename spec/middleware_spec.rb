@@ -5,28 +5,25 @@ describe SchemaMonkey::Middleware do
   let(:migration) { ::ActiveRecord::Migration }
   let(:connection) { ::ActiveRecord::Base.connection }
 
-  around(:each) do |example|
+  before(:each) do |example|
     class Thing < ActiveRecord::Base
     end
-    migration.suppress_messages do
-      migration.create_table("things", force: :cascade)
-      example.run
-    end
+    migration.create_table "things"
   end
 
   context SchemaMonkey::Middleware::Query do
 
-    context Reporter::Middleware::Query::ExecCache do
+    context TestReporter::Middleware::Query::ExecCache do
       Given { migration.add_column("things", "column", "integer") }
       Given(:thing) { Thing.create!  }
       Then { expect_middleware { thing.update_attributes!(column: 3) } }
     end
 
-    context Reporter::Middleware::Query::Tables do
+    context TestReporter::Middleware::Query::Tables do
       Then { expect_middleware { connection.tables() } }
     end
 
-    context Reporter::Middleware::Query::Indexes do
+    context TestReporter::Middleware::Query::Indexes do
       Then { expect_middleware { connection.indexes("table") } }
     end
 
@@ -34,7 +31,7 @@ describe SchemaMonkey::Middleware do
 
   context SchemaMonkey::Middleware::Migration do
 
-    context Reporter::Middleware::Migration::Column do
+    context TestReporter::Middleware::Migration::Column do
       Given { migration.add_column("things", "column1", "integer") }
       Then { expect_middleware(env: {operation: :add})  { migration.add_column("things", "column2", "integer") } }
       Then { expect_middleware(env: {operation: :change}) { migration.change_column("things", "column1", "integer") } }
@@ -50,21 +47,21 @@ describe SchemaMonkey::Middleware do
         end
       }
       Then { expect_middleware(env: {operation: :record}) { change.migrate(:down) } }
-      Then { expect_middleware(env: {operation: :define, type: :primary_key}) { migration.create_table("things", force: :cascade) } }
+      Then { expect_middleware(env: {operation: :define, type: :primary_key}) { migration.create_table "other" } }
       Then { expect_middleware(env: {operation: :define}) { table_statement(:integer, "column") } }
       Then { expect_middleware(enable: {type: :reference}, env: {operation: :define, column_name: "ref_id"}) { table_statement(:references, "ref") } }
       Then { expect_middleware(enable: {type: :reference}, env: {operation: :define, column_name: "ref_id"}) { table_statement(:belongs_to, "ref") } }
     end
 
-    context Reporter::Middleware::Migration::ColumnOptionsSql do
+    context TestReporter::Middleware::Migration::ColumnOptionsSql do
       Then { expect_middleware { migration.add_column("things", "column", "integer") } }
     end
 
-    context Reporter::Middleware::Migration::Index do
+    context TestReporter::Middleware::Migration::Index do
       Then { expect_middleware { table_statement(:index, "id") } }
     end
 
-    context Reporter::Middleware::Migration::IndexComponentsSql do
+    context TestReporter::Middleware::Migration::IndexComponentsSql do
       Given { migration.add_column("things", "column", "integer") }
       Then { expect_middleware { migration.add_index("things", "column") } }
     end
@@ -73,11 +70,11 @@ describe SchemaMonkey::Middleware do
 
   context SchemaMonkey::Middleware::Model do
 
-    context Reporter::Middleware::Model::Columns do
+    context TestReporter::Middleware::Model::Columns do
       Then { expect_middleware { Thing.columns } }
     end
 
-    context Reporter::Middleware::Model::ResetColumnInformation do
+    context TestReporter::Middleware::Model::ResetColumnInformation do
       Then { expect_middleware { Thing.reset_column_information } }
     end
 
@@ -87,19 +84,19 @@ describe SchemaMonkey::Middleware do
 
     let(:dumper) { ::ActiveRecord::SchemaDumper }
 
-    context Reporter::Middleware::Dumper::Extensions do
+    context TestReporter::Middleware::Dumper::Extensions do
       Then { expect_middleware(env: {extensions: []}) { dump }  }
     end
 
-    context Reporter::Middleware::Dumper::Tables do
+    context TestReporter::Middleware::Dumper::Tables do
       Then { expect_middleware { dump }  }
     end
 
-    context Reporter::Middleware::Dumper::Table do
+    context TestReporter::Middleware::Dumper::Table do
       Then { expect_middleware(env: {table: { name: "things"} }) { dump }  }
     end
 
-    context Reporter::Middleware::Dumper::Indexes do
+    context TestReporter::Middleware::Dumper::Indexes do
       Then { expect_middleware(env: {table: { name: "things"} }) { dump }  }
     end
 
@@ -112,7 +109,7 @@ describe SchemaMonkey::Middleware do
   end
 
   def table_statement(method, *args)
-    migration.create_table("things", force: :cascade) do |t|
+    migration.create_table("other", force: :cascade) do |t|
       t.send method, *args
     end
   end
@@ -120,14 +117,9 @@ describe SchemaMonkey::Middleware do
   def expect_middleware(env: {}, enable: {})
     middleware = described_class
     begin
-      _enable = enable
-      middleware.enable(-> (env) {
-        _enable.all?{ |key, val|
-          env.send(key) == val
-        }
-      })
+      middleware.enable(-> (_env) { enable.all?{ |key, val| _env.send(key) == val } })
       expect { yield }.to raise_error { |error|
-        expect(error).to be_a Reporter::Called
+        expect(error).to be_a TestReporter::Called
         expect(error.middleware).to eq middleware
         env.each do |key, val|
           actual = error.env.send key

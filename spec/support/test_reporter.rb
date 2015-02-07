@@ -1,4 +1,4 @@
-module Reporter
+module TestReporter
   
   class Called < Exception
     attr_accessor :middleware, :env
@@ -9,33 +9,14 @@ module Reporter
   end
 
   module Notify
+    def self.included(base)
+      base.send :include, Enableable
+    end
 
     def after(env)
-      middleware = self.singleton_class.ancestors.find(&it.to_s =~ /Reporter::Middleware/)
-      return unless middleware.enabled?(env)
-      middleware.disable
+      return unless middleware = enabled_middleware(TestReporter, env)
       raise Called, middleware: middleware, env: env
     end
-
-    def self.included(base)
-      base.module_eval do
-        def self.enable(condition = true)
-          @enabled = condition
-        end
-        def self.enabled?(env)
-          case @enabled
-          when Proc then @enabled.call(env)
-          else @enabled
-          end
-        end
-        def self.disable
-          @enabled = false
-        end
-
-        disable
-      end
-    end
-
   end
 
   module Middleware
@@ -66,4 +47,4 @@ module Reporter
   end
 end
 
-SchemaMonkey.register(Reporter)
+SchemaMonkey.register(TestReporter)
