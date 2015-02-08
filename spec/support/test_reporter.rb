@@ -21,9 +21,9 @@ module TestReporter
 
   module Middleware
     module Query
-      module ExecCache ;        include Notify ; end
-      module Tables ;           include Notify ; end
-      module Indexes ;          include Notify ; end
+      module Exec ;                     include Notify ; end
+      module Tables ;                   include Notify ; end
+      module Indexes ;                  include Notify ; end
     end
 
     module Migration

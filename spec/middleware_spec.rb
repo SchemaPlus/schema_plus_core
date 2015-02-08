@@ -13,10 +13,13 @@ describe SchemaMonkey::Middleware do
 
   context SchemaMonkey::Middleware::Query do
 
-    context TestReporter::Middleware::Query::ExecCache do
-      Given { migration.add_column("things", "column", "integer") }
-      Given(:thing) { Thing.create!  }
-      Then { expect_middleware { thing.update_attributes!(column: 3) } }
+    Given { migration.add_column("things", "column1", "integer") }
+    Given(:thing) { Thing.create!  }
+
+    context TestReporter::Middleware::Query::Exec do
+      Then { expect_middleware(enable: {sql: /SELECT column1/}) { connection.select_values("SELECT column1 FROM things") } }
+      Then { expect_middleware(enable: {sql: /^UPDATE/}) { thing.update_attributes!(column1: 3) } }
+      Then { expect_middleware(enable: {sql: /^DELETE/}) { thing.delete } }
     end
 
     context TestReporter::Middleware::Query::Tables do
@@ -49,13 +52,13 @@ describe SchemaMonkey::Middleware do
       }
       Then { expect_middleware(env: {operation: :record}) { change.migrate(:down) } }
       Then { expect_middleware(env: {operation: :define, type: :primary_key}) { migration.create_table "other" } }
-      Then { expect_middleware(env: {operation: :define}) { table_statement(:integer, "column") } }
+      Then { expect_middleware(env: {operation: :define}) { table_statement(:integer, "column1") } }
       Then { expect_middleware(enable: {type: :reference}, env: {operation: :define, column_name: "ref_id"}) { table_statement(:references, "ref") } }
       Then { expect_middleware(enable: {type: :reference}, env: {operation: :define, column_name: "ref_id"}) { table_statement(:belongs_to, "ref") } }
     end
 
     context TestReporter::Middleware::Migration::ColumnOptionsSql do
-      Then { expect_middleware { migration.add_column("things", "column", "integer") } }
+      Then { expect_middleware { migration.add_column("things", "column1", "integer") } }
     end
 
     context TestReporter::Middleware::Migration::Index do
@@ -63,8 +66,8 @@ describe SchemaMonkey::Middleware do
     end
 
     context TestReporter::Middleware::Migration::IndexComponentsSql do
-      Given { migration.add_column("things", "column", "integer") }
-      Then { expect_middleware { migration.add_index("things", "column") } }
+      Given { migration.add_column("things", "column1", "integer") }
+      Then { expect_middleware { migration.add_index("things", "column1") } }
     end
 
   end
@@ -115,24 +118,44 @@ describe SchemaMonkey::Middleware do
     end
   end
 
+  def env_match(env, matcher, bool: false)
+    matcher.each do |key, val|
+      actual = env.send key
+      case val
+      when Hash
+        val.each do |subkey, subval|
+          subactual = actual.send subkey
+          if bool
+            return false unless subactual == subval
+          else
+            expect(subactual).to eq subval
+          end
+        end
+      when Regexp
+        if bool
+          return false unless actual =~ val
+        else
+          expect(actual).to match val
+        end
+      else
+        if bool
+          return false unless actual == val
+        else
+          expect(actual).to eq val
+        end
+      end
+    end
+    true if bool
+  end
+
   def expect_middleware(env: {}, enable: {})
     middleware = described_class
     begin
-      middleware.enable(-> (_env) { enable.all?{ |key, val| _env.send(key) == val } })
+      middleware.enable(-> (_env) { env_match(_env, enable, bool: true) })
       expect { yield }.to raise_error { |error|
         expect(error).to be_a TestReporter::Called
         expect(error.middleware).to eq middleware
-        env.each do |key, val|
-          actual = error.env.send key
-
-          if val.is_a? Hash and not actual.is_a? Hash
-            val.each do |subkey, subval|
-              expect(actual.send subkey).to eq subval
-            end
-          else
-            expect(actual).to eq val
-          end
-        end
+        env_match(error.env, env)
       }
     ensure
       middleware.disable

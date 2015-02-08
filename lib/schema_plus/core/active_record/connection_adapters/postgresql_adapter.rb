@@ -11,7 +11,13 @@ module SchemaPlus
           end
 
           def exec_cache(sql, name, binds)
-            SchemaMonkey::Middleware::Query::ExecCache.start(connection: self, sql: sql, name: name, binds: binds) { |env|
+            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, name: name, binds: binds) { |env|
+              env.result = super env.sql, env.name, env.binds
+            }.result
+          end
+
+          def exec_no_cache(sql, name, binds)
+            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, name: name, binds: binds) { |env|
               env.result = super env.sql, env.name, env.binds
             }.result
           end

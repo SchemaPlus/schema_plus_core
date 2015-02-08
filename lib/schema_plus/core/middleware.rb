@@ -2,7 +2,7 @@ module SchemaPlus
   module Core
     module Middleware
       module Query
-        module ExecCache
+        module Exec
           ENV = [:connection, :sql, :name, :binds, :result]
         end
 
