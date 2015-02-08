@@ -4,10 +4,10 @@ module SchemaPlus
       module ConnectionAdapters
         module Mysql2Adapter
 
-          def self.prepended(base)
-            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::AbstractMysqlAdapter, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Column
-            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::AbstractMysqlAdapter, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Reference
-            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::AbstractMysqlAdapter, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Index
+          def change_column(table_name, name, type, options = {})
+            SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :change, table_name: table_name, column_name: name, type: type, options: options.deep_dup) do |env|
+              super env.table_name, env.column_name, env.type, env.options
+            end
           end
 
           def indexes(table_name, query_name=nil)

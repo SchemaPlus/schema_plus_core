@@ -4,32 +4,27 @@ module SchemaPlus
       module ConnectionAdapters
         module Sqlite3Adapter
 
-          def self.included(base)
-            base.class_eval do
-              alias_method_chain :exec_query, :schema_monkey
-              alias_method_chain :indexes, :schema_monkey
-              alias_method_chain :tables, :schema_monkey
+          def change_column(table_name, name, type, options = {})
+            SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :change, table_name: table_name, column_name: name, type: type, options: options.deep_dup) do |env|
+              super env.table_name, env.column_name, env.type, env.options
             end
-            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::SQLite3Adapter, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Column
-            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Reference
-            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Index
           end
 
-          def exec_query_with_schema_monkey(sql, name=nil, binds=[])
+          def exec_query(sql, name=nil, binds=[])
             SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, name: name, binds: binds) { |env|
-              env.result = exec_query_without_schema_monkey env.sql, env.name, env.binds
+              env.result = super env.sql, env.name, env.binds
             }.result
           end
 
-          def indexes_with_schema_monkey(table_name, query_name=nil)
+          def indexes(table_name, query_name=nil)
             SchemaMonkey::Middleware::Query::Indexes.start(connection: self, table_name: table_name, query_name: query_name, index_definitions: []) { |env|
-              env.index_definitions += indexes_without_schema_monkey env.table_name, env.query_name
+              env.index_definitions += super env.table_name, env.query_name
             }.index_definitions
           end
 
-          def tables_with_schema_monkey(query_name=nil, table_name=nil)
+          def tables(query_name=nil, table_name=nil)
             SchemaMonkey::Middleware::Query::Tables.start(connection: self, query_name: query_name, table_name: table_name, tables: []) { |env|
-              env.tables += tables_without_schema_monkey env.query_name, env.table_name
+              env.tables += super env.query_name, env.table_name
             }.tables
           end
 
