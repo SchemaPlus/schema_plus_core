@@ -5,9 +5,9 @@ module SchemaPlus
         module PostgresqlAdapter
 
           def self.prepended(base)
-            SchemaMonkey.include_once ::ActiveRecord::ConnectionAdapters::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Reference
-            SchemaMonkey.include_once ::ActiveRecord::ConnectionAdapters::PostgreSQL::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Column
-            SchemaMonkey.include_once ::ActiveRecord::ConnectionAdapters::PostgreSQL::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Index
+            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Reference
+            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::PostgreSQL::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Column
+            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::PostgreSQL::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Index
           end
 
           def exec_cache(sql, name, binds)

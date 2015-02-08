@@ -10,9 +10,9 @@ module SchemaPlus
               alias_method_chain :indexes, :schema_monkey
               alias_method_chain :tables, :schema_monkey
             end
-            SchemaMonkey.include_once ::ActiveRecord::ConnectionAdapters::SQLite3Adapter, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Column
-            SchemaMonkey.include_once ::ActiveRecord::ConnectionAdapters::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Reference
-            SchemaMonkey.include_once ::ActiveRecord::ConnectionAdapters::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Index
+            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::SQLite3Adapter, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Column
+            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Reference
+            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Index
           end
 
           def exec_query_with_schema_monkey(sql, name=nil, binds=[])

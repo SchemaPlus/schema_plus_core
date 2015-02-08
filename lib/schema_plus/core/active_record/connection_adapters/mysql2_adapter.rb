@@ -5,9 +5,9 @@ module SchemaPlus
         module Mysql2Adapter
 
           def self.prepended(base)
-            SchemaMonkey.include_once ::ActiveRecord::ConnectionAdapters::AbstractMysqlAdapter, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Column
-            SchemaMonkey.include_once ::ActiveRecord::ConnectionAdapters::AbstractMysqlAdapter, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Reference
-            SchemaMonkey.include_once ::ActiveRecord::ConnectionAdapters::AbstractMysqlAdapter, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Index
+            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::AbstractMysqlAdapter, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Column
+            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::AbstractMysqlAdapter, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Reference
+            SchemaMonkey.insert_module ::ActiveRecord::ConnectionAdapters::AbstractMysqlAdapter, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Index
           end
 
           def indexes(table_name, query_name=nil)
