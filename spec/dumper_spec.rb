@@ -28,7 +28,7 @@ describe SchemaMonkey::Middleware::Dumper do
 
   context TestDumper::Middleware::Dumper::Table do
     Then { expect(dump).to match /t[.]integer.*option: #{middleware} \# comment: #{middleware}/ }
-    Then { expect(dump).to match /statement: #{middleware}\s+end\s+trailer: #{middleware}/ }
+    Then { expect(dump).to match /statement: #{middleware}\s+end\s+(add_index.*)?\s+trailer: #{middleware}/ }
   end
 
   context TestDumper::Middleware::Dumper::Indexes do

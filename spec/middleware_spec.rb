@@ -24,7 +24,7 @@ describe SchemaMonkey::Middleware do
     end
 
     context TestReporter::Middleware::Query::Indexes do
-      Then { expect_middleware { connection.indexes("table") } }
+      Then { expect_middleware { connection.indexes("things") } }
     end
 
   end
@@ -34,7 +34,8 @@ describe SchemaMonkey::Middleware do
     context TestReporter::Middleware::Migration::Column do
       Given { migration.add_column("things", "column1", "integer") }
       Then { expect_middleware(env: {operation: :add})  { migration.add_column("things", "column2", "integer") } }
-      Then { expect_middleware(env: {operation: :change}) { migration.change_column("things", "column1", "integer") } }
+      # Note, sqlite3 emits both a :change and a :define
+      Then { expect_middleware(enable: {operation: :change}) { migration.change_column("things", "column1", "integer") } }
       Then { expect_middleware(enable: {type: :reference}, env: {column_name: "ref_id"}) { migration.add_reference("things", "ref") } }
 
       Given(:change) {
