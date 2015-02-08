@@ -9,7 +9,7 @@ module SchemaPlus
               alias_method_chain :indexes, :schema_monkey
               alias_method_chain :tables, :schema_monkey
             end
-            SchemaMonkey.include_once ::ActiveRecord::ConnectionAdapters::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Column
+            SchemaMonkey.include_once ::ActiveRecord::ConnectionAdapters::SQLite3Adapter, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Column
             SchemaMonkey.include_once ::ActiveRecord::ConnectionAdapters::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Reference
             SchemaMonkey.include_once ::ActiveRecord::ConnectionAdapters::SchemaStatements, SchemaPlus::Core::ActiveRecord::ConnectionAdapters::SchemaStatements::Index
           end
