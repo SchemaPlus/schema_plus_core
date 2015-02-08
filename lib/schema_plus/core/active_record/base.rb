@@ -1,12 +1,7 @@
 module SchemaPlus
   module Core
     module ActiveRecord
-
       module Base
-        def self.prepended(base)
-          base.singleton_class.prepend ClassMethods
-        end
-
         module ClassMethods
 
           def columns
