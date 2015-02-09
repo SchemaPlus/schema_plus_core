@@ -28,9 +28,13 @@ module TestReporter
 
     module Migration
       module Column ;                   include Notify ; end
-      module ColumnOptionsSql ;         include Notify ; end
       module Index ;                    include Notify ; end
-      module IndexComponentsSql ;       include Notify ; end
+    end
+
+    module Sql
+      module ColumnOptions ;            include Notify ; end
+      module IndexComponents ;          include Notify ; end
+      module Table ;                    include Notify ; end
     end
 
     module Model

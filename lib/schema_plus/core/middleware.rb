@@ -22,17 +22,26 @@ module SchemaPlus
           ENV = [:caller, :operation, :table_name, :column_name, :type, :options]
         end
 
-        module ColumnOptionsSql
-          ENV = [:caller, :connection, :sql, :options]
-        end
-
         module Index
           ENV = [:caller, :operation, :table_name, :column_names, :options]
         end
 
-        module IndexComponentsSql
+      end
+
+      module Sql
+
+        module ColumnOptions
+          ENV = [:caller, :connection, :sql, :options]
+        end
+
+        module IndexComponents
           ENV = [:connection, :table_name, :column_names, :options, :sql]
         end
+
+        module Table
+          ENV = [:caller, :connection, :table_definition, :sql]
+        end
+
       end
 
       module Dumper

@@ -10,6 +10,12 @@ module SchemaPlus
             end
           end
 
+          def add_index(table_name, column_names, options={})
+            SchemaMonkey::Middleware::Migration::Index.start(caller: self, operation: :add, table_name: table_name, column_names: column_names, options: options.deep_dup) do |env|
+              super env.table_name, env.column_names, env.options
+            end
+          end
+
           def exec_query(sql, name=nil, binds=[])
             SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, name: name, binds: binds) { |env|
               env.result = super env.sql, env.name, env.binds

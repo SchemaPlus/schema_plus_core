@@ -16,19 +16,8 @@ module SchemaPlus
             end
           end
 
-          def add_index(*args)
-            options = args.extract_options!
-            table_name, column_names = args
-            SchemaMonkey::Middleware::Migration::Index.start(caller: self, operation: :add, table_name: table_name, column_names: column_names, options: options.deep_dup) do |env|
-              super env.table_name, env.column_names, env.options
-            end
-          end
-
-
-          IndexComponentsSql = KeyStruct[:name, :type, :columns, :options, :algorithm, :using]
-
           def add_index_options(table_name, column_names, options={})
-            SchemaMonkey::Middleware::Migration::IndexComponentsSql.start(connection: self, table_name: table_name, column_names: Array.wrap(column_names), options: options.deep_dup, sql: IndexComponentsSql.new) { |env|
+            SchemaMonkey::Middleware::Sql::IndexComponents.start(connection: self, table_name: table_name, column_names: Array.wrap(column_names), options: options.deep_dup, sql: SqlStruct::IndexComponents.new) { |env|
               env.sql.name, env.sql.type, env.sql.columns, env.sql.options, env.sql.algorithm, env.sql.using = super env.table_name, env.column_names, env.options
             }.sql.to_hash.values
           end
@@ -41,9 +30,15 @@ module SchemaPlus
             end
 
             def add_column_options!(sql, options)
-              SchemaMonkey::Middleware::Migration::ColumnOptionsSql.start(caller: self, connection: self.instance_variable_get('@conn'), sql: sql, options: options) { |env|
+              SchemaMonkey::Middleware::Sql::ColumnOptions.start(caller: self, connection: self.instance_variable_get('@conn'), sql: sql, options: options) { |env|
                 super env.sql, env.options
               }.sql
+            end
+
+            def visit_TableDefinition(o)
+              SchemaMonkey::Middleware::Sql::Table.start(caller: self, connection: self.instance_variable_get('@conn'), table_definition: o, sql: SqlStruct::Table.new) { |env|
+                env.sql.parse! super env.table_definition
+              }.sql.assemble
             end
           end
         end
