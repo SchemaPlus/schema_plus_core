@@ -1,7 +1,4 @@
-
 require 'spec_helper'
-
-
 
 describe SchemaMonkey::Middleware::Dumper do
 
