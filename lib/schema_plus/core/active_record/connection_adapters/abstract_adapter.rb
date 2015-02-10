@@ -25,9 +25,9 @@ module SchemaPlus
           module SchemaCreation
 
             def add_column_options!(sql, options)
-              SchemaMonkey::Middleware::Sql::ColumnOptions.start(caller: self, connection: self.instance_variable_get('@conn'), sql: sql, options: options) { |env|
-                super env.sql, env.options
-              }.sql
+              sql << " " + SchemaMonkey::Middleware::Sql::ColumnOptions.start(caller: self, connection: self.instance_variable_get('@conn'), sql: "", column: options[:column], options: options.except(:column)) { |env|
+                super env.sql, env.options.merge(column: env.column)
+              }.sql.lstrip
             end
 
             def visit_TableDefinition(o)
