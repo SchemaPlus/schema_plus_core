@@ -20,6 +20,7 @@ require_relative "core/active_record/connection_adapters/table_definition"
 require_relative "core/active_record/migration/command_recorder"
 require_relative "core/active_record/schema_dumper"
 require_relative "core/middleware"
+require_relative "core/schema_dump"
 require_relative "core/sql_struct"
 require_relative "core/version"
 
