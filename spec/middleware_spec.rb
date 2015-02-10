@@ -21,12 +21,15 @@ describe SchemaMonkey::Middleware do
       Then { expect_middleware(enable: {sql: /^UPDATE/}) { thing.update_attributes!(column1: 3) } }
       Then { expect_middleware(enable: {sql: /^DELETE/}) { thing.delete } }
     end
+  end
 
-    context TestReporter::Middleware::Query::Tables do
+  context SchemaMonkey::Middleware::Schema do
+
+    context TestReporter::Middleware::Schema::Tables do
       Then { expect_middleware { connection.tables() } }
     end
 
-    context TestReporter::Middleware::Query::Indexes do
+    context TestReporter::Middleware::Schema::Indexes do
       Then { expect_middleware { connection.indexes("things") } }
     end
 

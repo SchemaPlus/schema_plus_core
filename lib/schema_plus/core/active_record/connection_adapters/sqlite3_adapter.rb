@@ -23,13 +23,13 @@ module SchemaPlus
           end
 
           def indexes(table_name, query_name=nil)
-            SchemaMonkey::Middleware::Query::Indexes.start(connection: self, table_name: table_name, query_name: query_name, index_definitions: []) { |env|
+            SchemaMonkey::Middleware::Schema::Indexes.start(connection: self, table_name: table_name, query_name: query_name, index_definitions: []) { |env|
               env.index_definitions += super env.table_name, env.query_name
             }.index_definitions
           end
 
           def tables(query_name=nil, table_name=nil)
-            SchemaMonkey::Middleware::Query::Tables.start(connection: self, query_name: query_name, table_name: table_name, tables: []) { |env|
+            SchemaMonkey::Middleware::Schema::Tables.start(connection: self, query_name: query_name, table_name: table_name, tables: []) { |env|
               env.tables += super env.query_name, env.table_name
             }.tables
           end

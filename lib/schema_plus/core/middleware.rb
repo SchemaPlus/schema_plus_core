@@ -5,7 +5,9 @@ module SchemaPlus
         module Exec
           ENV = [:connection, :sql, :name, :binds, :result]
         end
+      end
 
+      module Schema
         module Tables
           # :database and :like are only for mysql
           # :table_name is only for sqlite3
@@ -13,7 +15,7 @@ module SchemaPlus
         end
 
         module Indexes
-          ENV = [:connection, :table_name, :query_name, :index_definitions]
+          ENV = [:connection, :query_name, :table_name, :index_definitions]
         end
       end
 
@@ -25,11 +27,9 @@ module SchemaPlus
         module Index
           ENV = [:caller, :operation, :table_name, :column_names, :options]
         end
-
       end
 
       module Sql
-
         module ColumnOptions
           ENV = [:caller, :connection, :sql, :options]
         end
@@ -41,7 +41,6 @@ module SchemaPlus
         module Table
           ENV = [:caller, :connection, :table_definition, :sql]
         end
-
       end
 
       module Dumper
@@ -67,7 +66,6 @@ module SchemaPlus
           ENV = [:model]
         end
       end
-
     end
   end
 end

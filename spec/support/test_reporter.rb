@@ -22,6 +22,9 @@ module TestReporter
   module Middleware
     module Query
       module Exec ;                     include Notify ; end
+    end
+
+    module Schema
       module Tables ;                   include Notify ; end
       module Indexes ;                  include Notify ; end
     end
