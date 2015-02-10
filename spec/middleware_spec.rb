@@ -99,7 +99,7 @@ describe SchemaMonkey::Middleware do
     let(:dumper) { ::ActiveRecord::SchemaDumper }
 
     context TestReporter::Middleware::Dumper::Initial do
-      Then { expect_middleware(env: {initial: []}) { dump }  }
+      Then { expect_middleware { dump }  }
     end
 
     context TestReporter::Middleware::Dumper::Tables do

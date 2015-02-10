@@ -5,7 +5,7 @@ module TestDumper
         include Enableable
         def after(env)
           return unless middleware = enabled_middleware(TestDumper, env)
-          env.initial << middleware.to_s
+          env.initial.unshift middleware.to_s
         end
       end
       module Tables
