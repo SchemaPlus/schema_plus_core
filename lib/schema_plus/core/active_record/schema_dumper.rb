@@ -60,7 +60,6 @@ module SchemaPlus
             (?<trailer>.*)
             \Z
             }xm
-            Kernel.warn "-----\n#{stream.string}\n-----" if m.nil?
             env.table.pname = m[:name]
             env.table.options = m[:options].strip
             env.table.trailer = m[:trailer].split("\n").map(&:strip).reject{|s| s.blank?}
