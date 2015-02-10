@@ -15,7 +15,6 @@ module SchemaPlus
             (?<options> \S.*)?
             $
           }xi
-          require 'byebug' ; byebug unless m
           self.command = m[:command]
           self.quotechar = m[:quote]
           self.name = m[:name]
