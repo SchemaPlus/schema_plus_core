@@ -5,11 +5,10 @@ describe SchemaMonkey::Middleware do
   let(:migration) { ::ActiveRecord::Migration }
   let(:connection) { ::ActiveRecord::Base.connection }
 
-  before(:each) do |example|
-    class Thing < ActiveRecord::Base
-    end
+  Given {
     migration.create_table "things"
-  end
+    class Thing < ActiveRecord::Base ; end
+  }
 
   context SchemaMonkey::Middleware::Query do
 
