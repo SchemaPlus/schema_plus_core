@@ -44,8 +44,8 @@ module SchemaPlus
       end
 
       module Dumper
-        module Extensions
-          ENV = [:dumper, :connection, :dump, :extensions]
+        module Initial
+          ENV = [:dumper, :connection, :dump, :initial]
         end
         module Tables
           ENV = [:dumper, :connection, :dump]

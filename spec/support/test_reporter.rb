@@ -46,7 +46,7 @@ module TestReporter
     end
 
     module Dumper
-      module Extensions ;               include Notify ; end
+      module Initial ;                  include Notify ; end
       module Tables ;                   include Notify ; end
       module Table ;                    include Notify ; end
       module Indexes ;                  include Notify ; end

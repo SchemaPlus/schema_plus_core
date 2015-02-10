@@ -15,7 +15,7 @@ describe SchemaMonkey::Middleware::Dumper do
     migration.add_foreign_key("other", "things")
   end
 
-  context TestDumper::Middleware::Dumper::Extensions do
+  context TestDumper::Middleware::Dumper::Initial do
     Then { expect(dump).to match /Schema[.]define.*do\s+#{middleware}/ }
   end
 

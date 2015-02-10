@@ -1,11 +1,11 @@
 module TestDumper
   module Middleware
     module Dumper
-      module Extensions
+      module Initial
         include Enableable
         def after(env)
           return unless middleware = enabled_middleware(TestDumper, env)
-          env.extensions << middleware.to_s
+          env.initial << middleware.to_s
         end
       end
       module Tables

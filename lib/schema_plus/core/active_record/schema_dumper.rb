@@ -31,10 +31,10 @@ module SchemaPlus
         end
 
         def extensions(_)
-          SchemaMonkey::Middleware::Dumper::Extensions.start(dumper: self, connection: @connection, dump: @dump, extensions: @dump.extensions) do |env|
+          SchemaMonkey::Middleware::Dumper::Initial.start(dumper: self, connection: @connection, dump: @dump, initial: @dump.initial) do |env|
             stream = StringIO.new
             super stream
-            env.dump.extensions << stream.string unless stream.string.blank?
+            env.dump.initial << stream.string unless stream.string.blank?
           end
         end
 

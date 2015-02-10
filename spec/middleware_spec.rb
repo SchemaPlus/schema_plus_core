@@ -98,8 +98,8 @@ describe SchemaMonkey::Middleware do
 
     let(:dumper) { ::ActiveRecord::SchemaDumper }
 
-    context TestReporter::Middleware::Dumper::Extensions do
-      Then { expect_middleware(env: {extensions: []}) { dump }  }
+    context TestReporter::Middleware::Dumper::Initial do
+      Then { expect_middleware(env: {initial: []}) { dump }  }
     end
 
     context TestReporter::Middleware::Dumper::Tables do
