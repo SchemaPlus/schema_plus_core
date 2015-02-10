@@ -29,28 +29,28 @@ module SchemaPlus
           end
 
           def select_rows(sql, name=nil, binds=[])
-            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, name: name, binds: binds) { |env|
-              env.result = super env.sql, env.name, env.binds
+            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, query_name: name, binds: binds) { |env|
+              env.result = super env.sql, env.query_name, env.binds
             }.result
           end
 
           def exec_query(sql, name='SQL', binds=[])
-            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, name: name, binds: binds) { |env|
-              env.result = super env.sql, env.name, env.binds
+            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, query_name: name, binds: binds) { |env|
+              env.result = super env.sql, env.query_name, env.binds
             }.result
           end
 
           alias exec_without_stmt exec_query
 
           def exec_insert(sql, name, binds, pk = nil, sequence_name = nil)
-            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, name: name, binds: binds) { |env|
-              env.result = super env.sql, env.name, env.binds, pk, sequence_name
+            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, query_name: name, binds: binds) { |env|
+              env.result = super env.sql, env.query_name, env.binds, pk, sequence_name
             }.result
           end
 
           def exec_delete(sql, name, binds)
-            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, name: name, binds: binds) { |env|
-              env.result = super env.sql, env.name, env.binds
+            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, query_name: name, binds: binds) { |env|
+              env.result = super env.sql, env.query_name, env.binds
             }.result
           end
 
