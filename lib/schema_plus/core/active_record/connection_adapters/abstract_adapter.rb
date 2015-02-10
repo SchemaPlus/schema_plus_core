@@ -23,11 +23,6 @@ module SchemaPlus
           end
 
           module SchemaCreation
-            def self.prepended(base)
-              base.class_eval do
-                public :options_include_default?
-              end
-            end
 
             def add_column_options!(sql, options)
               SchemaMonkey::Middleware::Sql::ColumnOptions.start(caller: self, connection: self.instance_variable_get('@conn'), sql: sql, options: options) { |env|
