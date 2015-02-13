@@ -33,7 +33,7 @@ describe SchemaMonkey::Middleware::Dumper do
   end
 
 
-  private 
+  private
 
   def middleware
     described_class

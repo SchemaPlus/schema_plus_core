@@ -1,5 +1,5 @@
 module TestReporter
-  
+
   class Called < Exception
     attr_accessor :middleware, :env
     def initialize(middleware:, env:)
