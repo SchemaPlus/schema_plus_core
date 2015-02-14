@@ -161,7 +161,7 @@ Stacks for class methods on ActiveRecord models.
 
 ### Migration
 
-Stacks for operations that define database objects in migrations and schema loading.
+Stacks for operations that change the schema.  In some cases the operation immediately modifies the database schema, in others the operation defines ActiveRecord objects (e.g., column definitions in a create_table definition) and the actual modification of the database schema will happen some time later.
 
 * `Migration::Column`
 
@@ -190,6 +190,18 @@ Stacks for operations that define database objects in migrations and schema load
   2. In the case of a table definition using `t.references` or `t.belongs_to`, the `:type` field will be set to `:reference` and the `:column_name` will include the `"_id"` suffix
 
   3. ActiveRecord's base implementation may make nested calls to column creation.  For example: References result in a nested call to create an integer column; Polymorphic references nest calls to create two columns; Sqlite3 implements `:change` by a nested call to a new table definition.  SchemaPlus::Core doesn't attempt to normalize or suppress these; each such nested call will result in its own `Migration::Column` stack execution.
+
+* `Migration::DropTable`
+
+  Drops a table from the database
+
+    Env Field    | Description | Initialized
+    --- | --- | ---
+    `:connection`     | The current ActiveRecord connection | *context*
+    `:table_name` | The name of the table | *arg*
+    `:options`    | The index options | *arg*
+
+   The base implementation drops the table.  No value is returned.
 
 * `Migration::Index`
 

@@ -17,6 +17,7 @@ module SchemaPlus
         module Indexes
           ENV = [:connection, :query_name, :table_name, :index_definitions]
         end
+
       end
 
       module Migration
@@ -27,6 +28,11 @@ module SchemaPlus
         module Index
           ENV = [:caller, :operation, :table_name, :column_names, :options]
         end
+
+        module DropTable
+          ENV = [:connection, :table_name, :options]
+        end
+
       end
 
       module Sql

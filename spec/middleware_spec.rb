@@ -59,6 +59,10 @@ describe SchemaMonkey::Middleware do
       Then { expect_middleware(enable: {type: :reference}, env: {operation: :define, column_name: "ref_id"}) { table_statement(:belongs_to, "ref") } }
     end
 
+    context TestReporter::Middleware::Migration::DropTable do
+      Then { expect_middleware { connection.drop_table "things" } }
+    end
+
     context TestReporter::Middleware::Migration::Index do
       Given { migration.add_column("things", "column1", "integer") }
       Then { expect_middleware { table_statement(:index, "id") } }

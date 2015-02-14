@@ -16,6 +16,12 @@ module SchemaPlus
             end
           end
 
+          def drop_table(table_name, options={})
+            SchemaMonkey::Middleware::Migration::DropTable.start(connection: self, table_name: table_name, options: options.dup) do |env|
+              super env.table_name, env.options
+            end
+          end
+
           def add_index_options(table_name, column_names, options={})
             SchemaMonkey::Middleware::Sql::IndexComponents.start(connection: self, table_name: table_name, column_names: Array.wrap(column_names), options: options.deep_dup, sql: SqlStruct::IndexComponents.new) { |env|
               env.sql.name, env.sql.type, env.sql.columns, env.sql.options, env.sql.algorithm, env.sql.using = super env.table_name, env.column_names, env.options

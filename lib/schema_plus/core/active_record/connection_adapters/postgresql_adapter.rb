@@ -16,6 +16,12 @@ module SchemaPlus
             end
           end
 
+          def drop_table(table_name, options={})
+            SchemaMonkey::Middleware::Migration::DropTable.start(connection: self, table_name: table_name, options: options.dup) do |env|
+              super env.table_name, env.options
+            end
+          end
+
           def exec_cache(sql, name, binds)
             SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, query_name: name, binds: binds) { |env|
               env.result = super env.sql, env.query_name, env.binds

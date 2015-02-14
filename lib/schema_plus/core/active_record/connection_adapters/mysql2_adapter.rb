@@ -16,6 +16,12 @@ module SchemaPlus
             end
           end
 
+          def drop_table(table_name, options={})
+            SchemaMonkey::Middleware::Migration::DropTable.start(connection: self, table_name: table_name, options: options.dup) do |env|
+              super env.table_name, env.options
+            end
+          end
+
           def indexes(table_name, query_name=nil)
             SchemaMonkey::Middleware::Schema::Indexes.start(connection: self, table_name: table_name, query_name: query_name, index_definitions: []) { |env|
               env.index_definitions += super env.table_name, env.query_name
