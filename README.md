@@ -193,7 +193,7 @@ Stacks for operations that define database objects in migrations and schema load
 
 * `Migration::Index`
 
-  Callback stack for various ways to define an index column.
+  Callback stack for various ways to define an index.
 
     Env Field    | Description | Initialized
     --- | --- | ---
