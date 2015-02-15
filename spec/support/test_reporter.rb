@@ -25,8 +25,9 @@ module TestReporter
     end
 
     module Schema
-      module Tables ;                   include Notify ; end
+      module Define ;                   include Notify ; end
       module Indexes ;                  include Notify ; end
+      module Tables ;                   include Notify ; end
     end
 
     module Migration

@@ -104,7 +104,18 @@ For organizational clarity, the SchemaPlus::Core stacks are grouped into modules
 
 ### Schema
 
-Stacks for general queries pertaining to the entire database schema:
+Stacks for general operations queries pertaining to the entire database schema:
+
+* `Schema::Define`
+
+  Wrapper around the `ActiveRecord::Schema.define` method loads a dumped schema file (`schema.rb`).
+  
+    Env Field    | Description | Initial value
+    --- | --- | ---
+    `:info` | Schema information hash | *args*
+    `:block` | The proc containing the schema definition statements | *args*
+
+  The base implementation calls the block to define the schema.
 
 * `Schema::Indexes`
 

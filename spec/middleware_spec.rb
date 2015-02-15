@@ -24,6 +24,10 @@ describe SchemaMonkey::Middleware do
 
   context SchemaMonkey::Middleware::Schema do
 
+    context TestReporter::Middleware::Schema::Define do
+      Then { expect_middleware { ActiveRecord::Schema.define { } } }
+    end
+
     context TestReporter::Middleware::Schema::Tables do
       Then { expect_middleware { connection.tables() } }
     end
