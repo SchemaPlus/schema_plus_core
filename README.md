@@ -199,7 +199,7 @@ Stacks for operations that change the schema.  In some cases the operation immed
     --- | --- | ---
     `:connection`     | The current ActiveRecord connection | *context*
     `:table_name` | The name of the table | *arg*
-    `:options`    | The index options | *arg*
+    `:options`    | Drop table options | *arg*
 
    The base implementation drops the table.  No value is returned.
 
