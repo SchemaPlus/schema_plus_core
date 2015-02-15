@@ -10,9 +10,21 @@ module SchemaPlus
             end
           end
 
+          def add_index_options(table_name, column_names, options={})
+            SchemaMonkey::Middleware::Sql::IndexComponents.start(connection: self, table_name: table_name, column_names: Array.wrap(column_names), options: options.deep_dup, sql: SqlStruct::IndexComponents.new) { |env|
+              env.sql.name, env.sql.type, env.sql.columns, env.sql.options, env.sql.algorithm, env.sql.using = super env.table_name, env.column_names, env.options
+            }.sql.to_hash.values
+          end
+
           def add_reference(table_name, name, options = {})
             SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :add, table_name: table_name, column_name: "#{name}_id", type: :reference, options: options.deep_dup) do |env|
               super env.table_name, env.column_name.sub(/_id$/, ''), env.options
+            end
+          end
+
+          def create_table(table_name, options={}, &block)
+            SchemaMonkey::Middleware::Migration::CreateTable.start(connection: self, table_name: table_name, options: options.deep_dup, block: block) do |env|
+              super env.table_name, env.options, &env.block
             end
           end
 
@@ -20,12 +32,6 @@ module SchemaPlus
             SchemaMonkey::Middleware::Migration::DropTable.start(connection: self, table_name: table_name, options: options.dup) do |env|
               super env.table_name, env.options
             end
-          end
-
-          def add_index_options(table_name, column_names, options={})
-            SchemaMonkey::Middleware::Sql::IndexComponents.start(connection: self, table_name: table_name, column_names: Array.wrap(column_names), options: options.deep_dup, sql: SqlStruct::IndexComponents.new) { |env|
-              env.sql.name, env.sql.type, env.sql.columns, env.sql.options, env.sql.algorithm, env.sql.using = super env.table_name, env.column_names, env.options
-            }.sql.to_hash.values
           end
 
           module SchemaCreation

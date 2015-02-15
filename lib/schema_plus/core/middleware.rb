@@ -29,13 +29,18 @@ module SchemaPlus
           ENV = [:caller, :operation, :table_name, :column_name, :type, :options]
         end
 
-        module Index
-          ENV = [:caller, :operation, :table_name, :column_names, :options]
+        module CreateTable
+          ENV = [:connection, :table_name, :options, :block]
         end
 
         module DropTable
           ENV = [:connection, :table_name, :options]
         end
+
+        module Index
+          ENV = [:caller, :operation, :table_name, :column_names, :options]
+        end
+
 
       end
 

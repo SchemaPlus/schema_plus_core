@@ -202,6 +202,19 @@ Stacks for operations that change the schema.  In some cases the operation immed
 
   3. ActiveRecord's base implementation may make nested calls to column creation.  For example: References result in a nested call to create an integer column; Polymorphic references nest calls to create two columns; Sqlite3 implements `:change` by a nested call to a new table definition.  SchemaPlus::Core doesn't attempt to normalize or suppress these; each such nested call will result in its own `Migration::Column` stack execution.
 
+* `Migration::CreateTable`
+
+  Creates a new table
+
+    Env Field    | Description | Initialized
+    --- | --- | ---
+    `:caller`     | The ActiveRecord instance responsible for creating the table | *context*
+    `:table_name` | The name of the table | *arg*
+    `:options`    | Create table options | *arg*
+    `:block`      | Proc containing table definition statements | *arg*
+
+   The base implementation creates the table, yielding a `table_definition` instance to the block (if a block is given).
+
 * `Migration::DropTable`
 
   Drops a table from the database

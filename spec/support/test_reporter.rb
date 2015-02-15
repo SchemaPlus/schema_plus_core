@@ -32,8 +32,9 @@ module TestReporter
 
     module Migration
       module Column ;                   include Notify ; end
-      module Index ;                    include Notify ; end
+      module CreateTable ;              include Notify ; end
       module DropTable ;                include Notify ; end
+      module Index ;                    include Notify ; end
     end
 
     module Sql

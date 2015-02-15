@@ -63,6 +63,10 @@ describe SchemaMonkey::Middleware do
       Then { expect_middleware(enable: {type: :reference}, env: {operation: :define, column_name: "ref_id"}) { table_statement(:belongs_to, "ref") } }
     end
 
+    context TestReporter::Middleware::Migration::CreateTable do
+      Then { expect_middleware { connection.create_table "other" } }
+    end
+
     context TestReporter::Middleware::Migration::DropTable do
       Then { expect_middleware { connection.drop_table "things" } }
     end
