@@ -40,14 +40,6 @@ gem "schema_plus_core"                # in a Gemfile
 gem.add_dependency "schema_plus_core" # in a .gemspec
 ```
 
-To use with a rails app, also include
-
-```ruby
-gem "schema_monkey_rails"
-```
-
-which creates a Railtie to that will insert SchemaPlus::Core appropriately into the rails stack. To use with Padrino, see [schema_monkey_padrino](https://github.com/SchemaPlus/schema_monkey_padrino).
-
 <!-- SCHEMA_DEV: TEMPLATE INSTALLATION - end -->
 
 
@@ -463,6 +455,5 @@ Some things to know about to help you develop and test:
   [schema_monkey](https://github.com/SchemaPlus/schema_monkey) client,
   using [schema_monkey](https://github.com/SchemaPlus/schema_monkey)'s
   convention-based protocols for extending ActiveRecord and using middleware stacks.
-  For more information see [schema_monkey](https://github.com/SchemaPlus/schema_monkey)'s README.
 
 <!-- SCHEMA_DEV: TEMPLATE USES SCHEMA_MONKEY - end -->
