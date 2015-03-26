@@ -418,9 +418,10 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
 
   The base method appends the collection of SchemaDump::Table::Index objects to `env.table.indexes`
 
-
 ## History
 
+* 0.2.1 Added `Migration::CreateTable` and `Schema::Define`; removed dependency on (defunct) `schema_monkey_rails` gem.  [Oops, this should have been a minor version bump]
+* 0.2.0 Added `Migration::DropTable`
 * 0.1.0 Initial release
 
 ## Development & Testing
