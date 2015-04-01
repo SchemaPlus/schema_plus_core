@@ -46,6 +46,9 @@ module TestReporter
     module Model
       module Columns ;                  include Notify ; end
       module ResetColumnInformation ;   include Notify ; end
+      module Association
+        module Declaration ;            include Notify ; end
+      end
     end
 
     module Dumper
