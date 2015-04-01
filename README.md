@@ -162,6 +162,21 @@ Stacks for class methods on ActiveRecord models.
 
     The base implementation performs the reset.
 
+* `Model::Association::Declaration`
+
+    Wrapper around the `Model.has_many`, `Model.has_and_belongs_to_many`, `Model.has_one`, and
+    `Model.belongs_to` methods
+
+        Env Field    | Description | Initialized
+        --- | --- | ---
+        `:model`     | The model Class being defined | *context*
+        `:name`      | The name of the association being defined. | *arg*
+        `:scope`     | The scope lambda associated with the association | *arg*
+        `:options`   | Options associated with the association. | *arg*
+        `:extension` | Extensions to the association to be made. | *arg*
+
+    The base implementation creates the association.
+
 ### Migration
 
 Stacks for operations that change the schema.  In some cases the operation immediately modifies the database schema, in others the operation defines ActiveRecord objects (e.g., column definitions in a create_table definition) and the actual modification of the database schema will happen some time later.

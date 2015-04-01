@@ -104,6 +104,16 @@ describe SchemaMonkey::Middleware do
       Then { expect_middleware { Thing.reset_column_information } }
     end
 
+    context TestReporter::Middleware::Model::Association::Declaration do
+      Then do
+        class Thingamajig < ActiveRecord::Base; end
+        expect_middleware { Thingamajig.has_many :things, class_name: Thing.name }
+        expect_middleware { Thingamajig.has_one :thing, class_name: Thing.name }
+        expect_middleware { Thingamajig.belongs_to :another_thing, class_name: Thing.name }
+        expect_middleware { Thingamajig.has_and_belongs_to_many :other_things, class_name: Thing.name }
+      end
+    end
+
   end
 
   context SchemaMonkey::Middleware::Dumper do

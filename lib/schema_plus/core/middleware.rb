@@ -80,6 +80,11 @@ module SchemaPlus
         module ResetColumnInformation
           ENV = [:model]
         end
+        module Association
+          module Declaration
+            ENV = [:model, :name, :scope, :options, :extension]
+          end
+        end
       end
     end
   end
