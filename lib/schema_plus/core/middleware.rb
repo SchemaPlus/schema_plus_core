@@ -82,7 +82,7 @@ module SchemaPlus
         end
         module Association
           module Declaration
-            ENV = [:model, :name, :scope, :options, :extension]
+            ENV = [:model, :name, :scope, :options, :extension, :result]
           end
         end
       end
