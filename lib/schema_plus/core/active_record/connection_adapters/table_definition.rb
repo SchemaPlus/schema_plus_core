@@ -5,20 +5,23 @@ module SchemaPlus
         module TableDefinition
 
           def column(name, type, options = {})
-            SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :define, table_name: self.name, column_name: name, type: type, options: options.deep_dup) do |env|
-              super env.column_name, env.type, env.options
+            options = options.deep_dup
+            SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :define, table_name: self.name, column_name: name, type: type, implements_reference: options.delete(:_implements_reference), options: options) do |env|
+              super env.column_name, env.type, env.options.merge(_implements_reference: true)
             end
           end
 
           def references(name, options = {})
-            SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :define, table_name: self.name, column_name: "#{name}_id", type: :reference, options: options.deep_dup) do |env|
-              super env.column_name.sub(/_id$/, ''), env.options
+            options = options.deep_dup
+            SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :define, table_name: self.name, column_name: "#{name}_id", type: :reference, implements_reference: options.delete(:_implements_reference), options: options) do |env|
+              super env.column_name.sub(/_id$/, ''), env.options.merge(_implements_reference: true)
             end
           end
 
           def belongs_to(name, options = {})
-            SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :define, table_name: self.name, column_name: "#{name}_id", type: :reference, options: options.deep_dup) do |env|
-              super env.column_name.sub(/_id$/, ''), env.options
+            options = options.deep_dup
+            SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :define, table_name: self.name, column_name: "#{name}_id", type: :reference, implements_reference: options.delete(:_implements_reference), options: options) do |env|
+              super env.column_name.sub(/_id$/, ''), env.options.merge(_implements_reference: true)
             end
           end
 

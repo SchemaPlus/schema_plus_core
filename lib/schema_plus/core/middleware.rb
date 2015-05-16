@@ -26,7 +26,7 @@ module SchemaPlus
 
       module Migration
         module Column
-          ENV = [:caller, :operation, :table_name, :column_name, :type, :options]
+          ENV = [:caller, :operation, :table_name, :column_name, :type, :implements_reference, :options]
         end
 
         module CreateTable
