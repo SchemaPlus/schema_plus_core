@@ -192,7 +192,7 @@ Stacks for operations that change the schema.  In some cases the operation immed
     `:table_name` | The name of the table | *arg*
     `:column_name` | The name of the column | *arg*
     `:type`       | The ActiveRecord column type (`:integer`, `:datetime`, etc.) | *arg*
-    `:implements_reference` | This implements a `t.references` or `t.belongs_to` [See below]| *context*
+    `:implements_reference` | This implements a `migration.add_reference`, `t.references` or `t.belongs_to` [See below]| *context*
     `:options`    | The column options | *arg*, default `{}`
 
   The base implementation performs the column operation.  No value is returned.
@@ -208,7 +208,7 @@ Stacks for operations that change the schema.  In some cases the operation immed
 
   2. In the case of a table definition using `t.references` or `t.belongs_to`, the `:type` field will be set to `:reference` and the `:column_name` will include the `"_id"` suffix
 
-  3. ActiveRecord's base implementation handles `t.references` and `t.belongs_to` by making nested calls to `g.add_column` to create the resulting column (or two columns, for polymorphic references).  SchemaPlus::Core invokes the `Migration::Column` stack for both the outer `t.references` or `t.belongs_to` call, as well as for the nested `add_column` call; in the nested call, `env.implements_reference` will be truthy.
+  3. ActiveRecord's base implementation handles `migration.add_reference`, `t.references` and `t.belongs_to` by making nested calls to `migration.add_column` or `t.column` to create the resulting column (or two columns, for polymorphic references).  SchemaPlus::Core invokes the `Migration::Column` stack for both the outer `migration.add_reference`, `t.references` or `t.belongs_to` call, as well as for the nested `migration.add_column` or `t.column` call; in the nested call, `env.implements_reference` will be truthy.
 
   4. Sqlite3 implements `change_column` by a creating a new table. This will result in nested calls to `add_column`, invoking the `Migration::Column` stack for each; SchemaPlus::Core does not currently provide a way to distinguish those calls from explicit top-level calls.
 

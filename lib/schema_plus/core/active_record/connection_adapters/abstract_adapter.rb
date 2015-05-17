@@ -5,7 +5,8 @@ module SchemaPlus
         module AbstractAdapter
 
           def add_column(table_name, name, type, options = {})
-            SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :add, table_name: table_name, column_name: name, type: type, options: options.deep_dup) do |env|
+            options = options.deep_dup
+            SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :add, table_name: table_name, column_name: name, type: type, implements_reference: options.delete(:_implements_reference), options: options) do |env|
               super env.table_name, env.column_name, env.type, env.options
             end
           end
@@ -18,7 +19,7 @@ module SchemaPlus
 
           def add_reference(table_name, name, options = {})
             SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :add, table_name: table_name, column_name: "#{name}_id", type: :reference, options: options.deep_dup) do |env|
-              super env.table_name, env.column_name.sub(/_id$/, ''), env.options
+              super env.table_name, env.column_name.sub(/_id$/, ''), env.options.merge(_implements_reference: true)
             end
           end
 

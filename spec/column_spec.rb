@@ -67,5 +67,34 @@ describe SchemaMonkey::Middleware::Migration::Column do
       end
     end
 
+    context "with an existing table" do
+      Given {
+        migration.create_table("things") { |t| }
+        spy.clear
+      }
+
+      context "when add reference using migration.add_reference" do
+
+        When { migration.add_reference("things", "test_reference") }
+        Then { expect(spy).to eq [
+          { column_name: "test_reference_id", type: :reference, implements_reference: nil },
+          { column_name: "test_reference_id", type: :integer, implements_reference: true }
+        ] }
+      end
+
+      context "when add polymorphic reference using migration.add_reference" do
+
+        When {
+          migration.add_reference("things", "test_reference", polymorphic: true)
+        }
+        Then { expect(spy).to eq [
+          { column_name: "test_reference_id", type: :reference, implements_reference: nil },
+          { column_name: "test_reference_id", type: :integer, implements_reference: true },
+          { column_name: "test_reference_type", type: :string, implements_reference: true }
+        ] }
+      end
+
+    end
+
   end
 end
