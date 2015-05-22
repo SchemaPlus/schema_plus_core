@@ -450,6 +450,7 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
 
 ## History
 
+* 0.5.0 Added `Migration::DropTable`
 * 0.4.0 Add `implements_reference` to `Migration::Column` stack env
 * 0.3.1 Pass along (undocumented) return values from association declarations
 * 0.3.0 Added `Model::Association::Declaration`
