@@ -22,6 +22,12 @@ module SchemaPlus
             end
           end
 
+          def rename_table(table_name, new_name)
+            SchemaMonkey::Middleware::Migration::RenameTable.start(connection: self, table_name: table_name, new_name: new_name) do |env|
+              super env.table_name, env.new_name
+            end
+          end
+
           def indexes(table_name, query_name=nil)
             SchemaMonkey::Middleware::Schema::Indexes.start(connection: self, table_name: table_name, query_name: query_name, index_definitions: []) { |env|
               env.index_definitions += super env.table_name, env.query_name

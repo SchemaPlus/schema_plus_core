@@ -22,6 +22,12 @@ module SchemaPlus
             end
           end
 
+          def rename_table(table_name, new_name)
+            SchemaMonkey::Middleware::Migration::RenameTable.start(connection: self, table_name: table_name, new_name: new_name) do |env|
+              super env.table_name, env.new_name
+            end
+          end
+
           def exec_cache(sql, name, binds)
             SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, query_name: name, binds: binds) { |env|
               env.result = super env.sql, env.query_name, env.binds

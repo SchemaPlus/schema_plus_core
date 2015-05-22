@@ -37,6 +37,10 @@ module SchemaPlus
           ENV = [:connection, :table_name, :options]
         end
 
+        module RenameTable
+          ENV = [:connection, :table_name, :new_name]
+        end
+
         module Index
           ENV = [:caller, :operation, :table_name, :column_names, :options]
         end

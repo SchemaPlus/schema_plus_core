@@ -11,7 +11,7 @@ module SchemaPlus
         autoload :Sqlite3Adapter,        DIR + "sqlite3_adapter"
       end
     end
-end
+  end
 end
 
 require_relative "core/active_record/base"

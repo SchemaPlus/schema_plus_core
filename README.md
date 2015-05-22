@@ -237,6 +237,18 @@ Stacks for operations that change the schema.  In some cases the operation immed
 
    The base implementation drops the table.  No value is returned.
 
+* `Migration::RenameTable`
+
+  Renames a table
+
+    Env Field    | Description | Initialized
+    --- | --- | ---
+    `:connection`     | The current ActiveRecord connection | *context*
+    `:table_name` | The existing name of the table | *arg*
+    `:new_name`    | The target name of the table | *arg*
+
+   The base implementation renames the table.  No value is returned.
+
 * `Migration::Index`
 
   Callback stack for various ways to define an index.

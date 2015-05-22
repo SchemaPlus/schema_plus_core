@@ -71,6 +71,10 @@ describe SchemaMonkey::Middleware do
       Then { expect_middleware { connection.drop_table "things" } }
     end
 
+    context TestReporter::Middleware::Migration::RenameTable do
+      Then { expect_middleware { connection.rename_table "things", "newthings" } }
+    end
+
     context TestReporter::Middleware::Migration::Index do
       Given { migration.add_column("things", "column1", "integer") }
       Then { expect_middleware { table_statement(:index, "id") } }
