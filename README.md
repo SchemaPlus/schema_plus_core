@@ -451,9 +451,9 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
 ## History
 
 * 0.5.0 Added `Migration::DropTable`
-* 0.4.0 Add `implements_reference` to `Migration::Column` stack env
-* 0.3.1 Pass along (undocumented) return values from association declarations
-* 0.3.0 Added `Model::Association::Declaration`
+* 0.4.0 Added `implements_reference` to `Migration::Column` stack env
+* 0.3.1 Pass along (undocumented) return values from association declarations ([#2](https://github.com/SchemaPlus/schema_plus_core/pull/2)).  Thanks to [@lowjoel](https://github.com/lowjoel) 
+* 0.3.0 Added `Model::Association::Declaration` ([#1](https://github.com/SchemaPlus/schema_plus_core/pull/1)).  Thanks to [@lowjoel](https://github.com/lowjoel). 
 * 0.2.1 Added `Migration::CreateTable` and `Schema::Define`; removed dependency on (defunct) `schema_monkey_rails` gem.  [Oops, this should have been a minor version bump]
 * 0.2.0 Added `Migration::DropTable`
 * 0.1.0 Initial release
