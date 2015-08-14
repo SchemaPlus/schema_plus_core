@@ -450,6 +450,7 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
 
 ## History
 
+* 0.5.1 Bug fix: Don't choke on a quoted newline in a `CREATE TABLE` statement ([#3](https://github.com/SchemaPlus/schema_plus_core/pull/3)).  Thanks to [@mikeauclair](https://github.com/mikeauclair) 
 * 0.5.0 Added `Migration::DropTable`
 * 0.4.0 Added `implements_reference` to `Migration::Column` stack env
 * 0.3.1 Pass along (undocumented) return values from association declarations ([#2](https://github.com/SchemaPlus/schema_plus_core/pull/2)).  Thanks to [@lowjoel](https://github.com/lowjoel) 
