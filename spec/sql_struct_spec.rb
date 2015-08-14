@@ -24,6 +24,12 @@ describe SchemaPlus::Core::SqlStruct do
       Then { expect(struct.options).to be_blank }
     end
 
+    context "a table with quoted newline" do
+      Given(:sql) { %q<CREATE TABLE \"things\" (\"id\" serial primary key, \"name\" character varying DEFAULT 'hey\nhey') >}
+      Then { expect(struct.command).to eq "CREATE TABLE" }
+      Then { expect(struct.name).to eq "things" }
+    end
+
   end
 
 end

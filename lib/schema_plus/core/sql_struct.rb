@@ -14,7 +14,7 @@ module SchemaPlus
             \) \s*
             (?<options> \S.*)?
             $
-          }xi
+          }mxi
           self.command = m[:command]
           self.quotechar = m[:quote]
           self.name = m[:name]
