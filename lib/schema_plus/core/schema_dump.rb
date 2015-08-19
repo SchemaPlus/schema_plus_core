@@ -43,7 +43,7 @@ module SchemaPlus
         @dependencies[tablename].sort.uniq.reject{|t| @dumper.ignored? t}.each(&block)
       end
 
-      class Table < KeyStruct[:name, :pname, :options, :columns, :indexes, :statements, :trailer]
+      class Table < KeyStruct[:name, :pname, :options, :columns, :indexes, :statements, :trailer, :alt]
         def initialize(*args)
           super
           self.columns ||= []
@@ -53,6 +53,11 @@ module SchemaPlus
         end
 
         def assemble(stream)
+          if pname.nil?
+            stream.puts alt
+            stream.puts ""
+            return
+          end
           stream.write "  create_table #{pname.inspect}"
           stream.write ", #{options}" unless options.blank?
           stream.puts " do |t|"

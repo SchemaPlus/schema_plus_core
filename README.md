@@ -369,6 +369,7 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
   * `table.indexes = []` - an array of SchemaDump::Table::Index objects
   * `table.statements` - a collection of statements to include in the table definition; each is a string that should start with `"t."`
   * `table.trailer` - a collection of migration statements to include immediately outside the table definition.  Each is a string
+  * `table.alt` - In some cases, ActiveRecord is unable to dump a table in the form of a migration `create_table` statement; in this case `table.pname` will be nil, and `table.alt` will contain the alternate string to dump instead. (E.g. if the table contains custom types, ActiveRecord will be unable to handle it and will just dump an error message as a comment.)
 
 * `Class SchemaPlus::Core::SchemaDump::Table::Column`
 

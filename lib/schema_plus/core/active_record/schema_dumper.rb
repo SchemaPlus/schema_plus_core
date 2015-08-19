@@ -60,20 +60,24 @@ module SchemaPlus
             (?<trailer>.*)
             \Z
             }xm
-            env.table.pname = m[:name]
-            env.table.options = m[:options].strip
-            env.table.trailer = m[:trailer].split("\n").map(&:strip).reject{|s| s.blank?}
-            env.table.columns = m[:columns].strip.split("\n").map { |col|
-              m = col.strip.match %r{
-              ^
-              t\.(?<type>\S+) \s*
-                [:'"](?<name>[^"\s]+)[,"]? \s*
-                ,? \s*
-                (?<options>.*)
-              $
-              }x
-              SchemaDump::Table::Column.new(name: m[:name], type: m[:type], options: m[:options])
-            }
+            if m.nil?
+              env.table.alt = stream.string
+            else
+              env.table.pname = m[:name]
+              env.table.options = m[:options].strip
+              env.table.trailer = m[:trailer].split("\n").map(&:strip).reject{|s| s.blank?}
+              env.table.columns = m[:columns].strip.split("\n").map { |col|
+                m = col.strip.match %r{
+                ^
+                t\.(?<type>\S+) \s*
+                  [:'"](?<name>[^"\s]+)[,"]? \s*
+                  ,? \s*
+                  (?<options>.*)
+                $
+                }x
+                SchemaDump::Table::Column.new(name: m[:name], type: m[:type], options: m[:options])
+              }
+            end
           end
         end
 
