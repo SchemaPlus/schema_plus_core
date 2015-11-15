@@ -1,4 +1,5 @@
 require "schema_monkey"
+require "pathname"
 
 module SchemaPlus
   module Core
