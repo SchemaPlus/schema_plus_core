@@ -17,6 +17,13 @@ describe SchemaPlus::Core::SqlStruct do
       Then { expect(struct.options).to eq "ENGINE=InnoDB" }
     end
 
+    context "with options (postgresql syntax)" do
+      Given(:sql) { %q<CREATE TABLE `things` (`id` int(11) auto_increment PRIMARY KEY, `column` int(11),  INDEX `index_things_on_column`  (`column`) ) INHERITS (parent_first, parent_second)> }
+      Then { expect(struct.command).to eq "CREATE TABLE" }
+      Then { expect(struct.name).to eq "things" }
+      Then { expect(struct.inheritance).to eq "INHERITS (parent_first, parent_second)" }
+    end
+
     context "temporary table (sqlite3 syntax)" do
       Given(:sql) { %q<CREATE TEMPORARY TABLE "athings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "column1" integer)> }
       Then { expect(struct.command).to eq "CREATE TEMPORARY TABLE" }

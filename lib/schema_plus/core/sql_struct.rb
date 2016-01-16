@@ -3,7 +3,11 @@ module SchemaPlus
     module SqlStruct
       IndexComponents = KeyStruct[:name, :type, :columns, :options, :algorithm, :using]
 
-      class Table < KeyStruct[:command, :name, :body, :options, :quotechar]
+      class Table < KeyStruct[:command, :name, :body, :options, :quotechar, :inheritance]
+        INHERITANCE = 'inheritance'
+        INHERITANCE_KEY = 'INHERITS'
+        INHERITANCE_REGEX = '(?<inheritance>INHERITS \s* \( .* \)) \s*'
+
         def parse!(sql)
           m = sql.strip.match %r{
           ^
@@ -12,6 +16,7 @@ module SchemaPlus
             \( \s*
             (?<body>.*) \s*
             \) \s*
+            #{INHERITANCE_REGEX if sql[INHERITANCE_KEY]}
             (?<options> \S.*)?
             $
           }mxi
@@ -20,9 +25,10 @@ module SchemaPlus
           self.name = m[:name]
           self.body = m[:body]
           self.options = m[:options]
+          self.inheritance = m[:inheritance] if m.names.include? INHERITANCE
         end
         def assemble
-          ["#{command} #{quotechar}#{name}#{quotechar} (#{body})", options].reject(&:blank?).join(" ")
+          ["#{command} #{quotechar}#{name}#{quotechar} (#{body})", inheritance, options].reject(&:blank?).join(" ")
         end
       end
     end
