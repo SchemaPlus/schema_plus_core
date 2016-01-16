@@ -450,6 +450,7 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
   The base method appends the collection of SchemaDump::Table::Index objects to `env.table.indexes`
 
 ## History
+* 0.6.2 Bug fix: don't choke on INHERITANCE in table definition (#7).  Thanks to [@ADone](https://github.com/ADone).
 * 0.6.1 Make sure to require pathname (#5)
 * 0.6.0 Added `table.alt` to dumper; Bug fix: Don't crash when AR fails to dump a table. Thanks to [@stenver](https://github.com/stenver) for tracking it down
 * 0.5.1 Bug fix: Don't choke on a quoted newline in a `CREATE TABLE` statement ([#3](https://github.com/SchemaPlus/schema_plus_core/pull/3)).  Thanks to [@mikeauclair](https://github.com/mikeauclair) 
