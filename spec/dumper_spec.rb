@@ -72,6 +72,15 @@ describe SchemaMonkey::Middleware::Dumper do
     migration.execute "CREATE TABLE custom_table ( my_column custom_type DEFAULT 'a'::custom_type NOT NULL)" if TestCustomType
   end
 
+  context "column default expressions", postgresql: :only do
+
+    before(:each) do
+      migration.execute %Q{ALTER TABLE "things" ADD "defexpr" character varying DEFAULT substring((random())::text, 3, 6)}
+    end
+
+    Then { expect(dump use_middleware: false).to match(/\\"substring\\"\(\(random/) }
+  end
+
   context TestDumper::Middleware::Dumper::Initial do
     Then { expect(dump).to match(/Schema[.]define.*do\s+#{middleware}/) }
   end
@@ -97,14 +106,14 @@ describe SchemaMonkey::Middleware::Dumper do
     described_class
   end
 
-  def dump
+  def dump(use_middleware: true)
     begin
-      middleware.enable once:false
+      middleware.enable once:false if use_middleware
       stream = StringIO.new
       ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, stream)
       return stream.string
     ensure
-      middleware.disable
+      middleware.disable if use_middleware
     end
   end
 
