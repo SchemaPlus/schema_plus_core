@@ -75,7 +75,7 @@ module SchemaPlus
                   (?<options>.*)
                 $
                 }x
-                SchemaDump::Table::Column.new(name: m[:name], type: m[:type], options: m[:options])
+                SchemaDump::Table::Column.new name: m[:name], type: m[:type], options: eval("{" + m[:options] + "}"), comments: []
               }
             end
           end
@@ -96,7 +96,7 @@ module SchemaPlus
                 $
               }x
               columns = m[:columns].tr(%q{[]'":}, '').strip.split(/\s*,\s*/)
-              SchemaDump::Table::Index.new name: m[:name], columns: columns, options: m[:options]
+              SchemaDump::Table::Index.new name: m[:name], columns: columns, options: eval("{#{m[:options]}}")
             }
           end
         end

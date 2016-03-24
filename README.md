@@ -377,10 +377,8 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
 
   * `column.name` - the column name
   * `column.type` - the column type (i.e., what comes after `"t."`)
-  * `column.options` - an optional string containing the options for the column
-  * `column.comments` - an optional string containing a comment to put in the schema dump
-  * `column.add_option(option)` - adds an option to the current string, separating with a "," if the current set isn't blank
-  * `column.add_comment(comment)` - adds an option to the current string, separating with a ";" if the current string isn't blank
+  * `column.options` - a hash containing the options for the column
+  * `column.comments` - an array of comment strings for the column
 
 * `Class SchemaPlus::Core::SchemaDump::Table::Index`
 
@@ -388,8 +386,7 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
 
   * `index.name` - the index name
   * `index.columns` - the columns that are in the index
-  * `index.options` - an optional string containing the options for the index
-  * `index.add_option(option)` - adds an option to the current string, separating with a "," if the current set isn't blank
+  * `index.options` - a hash containing the options for the column
 
 #### Schema Dump Middleware stacks
 

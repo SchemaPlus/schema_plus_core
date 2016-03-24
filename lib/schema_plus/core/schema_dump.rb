@@ -85,40 +85,28 @@ module SchemaPlus
 
         class Column < KeyStruct[:name, :type, :options, :comments]
 
-          def add_option(option)
-            self.options = [options, option].reject(&:blank?).join(', ')
-          end
-
-          def add_comment(comment)
-            self.comments = [comments, comment].reject(&:blank?).join('; ')
-          end
-
           def assemble(stream, typelen, namelen)
             stream.write "t.%-#{typelen}s " % type
             if options.blank? && comments.blank?
               stream.write name.inspect
             else
               pr = name.inspect
-              pr += "," unless options.blank?
+              pr += ',' unless options.blank?
               stream.write "%-#{namelen+3}s " % pr
             end
-            stream.write "#{options}" unless options.blank?
-            stream.write " " unless options.blank? or comments.blank?
-            stream.write "# #{comments}" unless comments.blank?
+            stream.write options.to_s.sub(/^{(.*)}$/, '\1') unless options.blank?
+            stream.write ' ' unless options.blank? or comments.blank?
+            stream.write '# ' + comments.join('; ') unless comments.blank?
           end
         end
 
         class Index < KeyStruct[:name, :columns, :options]
 
-          def add_option(option)
-            self.options = [options, option].reject(&:blank?).join(', ')
-          end
-
           def assemble(stream)
             stream.write [
               columns.inspect,
               "name: #{name.inspect}",
-              options
+              options.to_s.sub(/^{(.*)}$/, '\1')
             ].reject(&:blank?).join(", ")
           end
         end

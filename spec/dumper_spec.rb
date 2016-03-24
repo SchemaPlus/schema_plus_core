@@ -24,8 +24,8 @@ module TestDumper
         def after(env)
           return unless middleware = enabled_middleware(TestDumper, env)
           if column = env.table.columns.first
-            column.add_option "option: #{middleware}"
-            column.add_comment "comment: #{middleware}"
+            column.options[:option] = middleware.to_s
+            column.comments << "comment: #{middleware}"
           end
           env.table.statements << "statement: #{middleware}"
           env.table.trailer << "trailer: #{middleware}"
@@ -36,7 +36,7 @@ module TestDumper
         def after(env)
           return unless env.table.indexes.any?
           return unless middleware = enabled_middleware(TestDumper, env)
-          env.table.indexes.first.add_option middleware.to_s
+          env.table.indexes.first.options[:option] = middleware.to_s
         end
       end
     end
@@ -81,13 +81,13 @@ describe SchemaMonkey::Middleware::Dumper do
   end
 
   context TestDumper::Middleware::Dumper::Table do
-    Then { expect(dump).to match(/t[.]integer.*option: #{middleware} \# comment: #{middleware}/) }
+    Then { expect(dump).to match(/t[.]integer.*:option=>"#{middleware}" \# comment: #{middleware}/) }
     Then { expect(dump).to match(/statement: #{middleware}\s+end\s+(add_index.*)?\s+trailer: #{middleware}/) }
     Then { expect(dump).to match(/could not dump table.*custom_table.*unknown type.*custom_type/mi) } if TestCustomType
   end
 
   context TestDumper::Middleware::Dumper::Indexes do
-    Then { expect(dump).to match(/add_index.*#{middleware}/) }
+    Then { expect(dump).to match(/add_index.*:option=>"#{middleware}"/) }
   end
 
 
