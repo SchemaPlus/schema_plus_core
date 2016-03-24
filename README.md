@@ -101,7 +101,7 @@ Stacks for general operations queries pertaining to the entire database schema:
 * `Schema::Define`
 
   Wrapper around the `ActiveRecord::Schema.define` method loads a dumped schema file (`schema.rb`).
-  
+
     Env Field    | Description | Initial value
     --- | --- | ---
     `:info` | Schema information hash | *args*
@@ -450,11 +450,11 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
 * 0.6.2 Bug fix: don't choke on INHERITANCE in table definition (#7).  Thanks to [@ADone](https://github.com/ADone).
 * 0.6.1 Make sure to require pathname (#5)
 * 0.6.0 Added `table.alt` to dumper; Bug fix: Don't crash when AR fails to dump a table. Thanks to [@stenver](https://github.com/stenver) for tracking it down
-* 0.5.1 Bug fix: Don't choke on a quoted newline in a `CREATE TABLE` statement ([#3](https://github.com/SchemaPlus/schema_plus_core/pull/3)).  Thanks to [@mikeauclair](https://github.com/mikeauclair) 
+* 0.5.1 Bug fix: Don't choke on a quoted newline in a `CREATE TABLE` statement ([#3](https://github.com/SchemaPlus/schema_plus_core/pull/3)).  Thanks to [@mikeauclair](https://github.com/mikeauclair)
 * 0.5.0 Added `Migration::DropTable`
 * 0.4.0 Added `implements_reference` to `Migration::Column` stack env
-* 0.3.1 Pass along (undocumented) return values from association declarations ([#2](https://github.com/SchemaPlus/schema_plus_core/pull/2)).  Thanks to [@lowjoel](https://github.com/lowjoel) 
-* 0.3.0 Added `Model::Association::Declaration` ([#1](https://github.com/SchemaPlus/schema_plus_core/pull/1)).  Thanks to [@lowjoel](https://github.com/lowjoel). 
+* 0.3.1 Pass along (undocumented) return values from association declarations ([#2](https://github.com/SchemaPlus/schema_plus_core/pull/2)).  Thanks to [@lowjoel](https://github.com/lowjoel)
+* 0.3.0 Added `Model::Association::Declaration` ([#1](https://github.com/SchemaPlus/schema_plus_core/pull/1)).  Thanks to [@lowjoel](https://github.com/lowjoel).
 * 0.2.1 Added `Migration::CreateTable` and `Schema::Define`; removed dependency on (defunct) `schema_monkey_rails` gem.  [Oops, this should have been a minor version bump]
 * 0.2.0 Added `Migration::DropTable`
 * 0.1.0 Initial release
