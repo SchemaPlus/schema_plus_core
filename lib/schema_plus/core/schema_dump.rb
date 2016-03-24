@@ -103,11 +103,7 @@ module SchemaPlus
         class Index < KeyStruct[:name, :columns, :options]
 
           def assemble(stream)
-            stream.write [
-              columns.inspect,
-              "name: #{name.inspect}",
-              options.to_s.sub(/^{(.*)}$/, '\1')
-            ].reject(&:blank?).join(", ")
+            stream.write columns.inspect + ", " + {name: name}.merge(options).to_s.sub(/^{(.*)}$/, '\1')
           end
         end
       end
