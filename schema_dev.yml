@@ -1,8 +1,14 @@
 ruby:
     - 2.1.5
+    - 2.3.0
 activerecord:
     - 4.2
+    - 5.0
 db:
     - mysql2
     - sqlite3
     - postgresql
+exclude:
+    -
+        ruby: 2.1.5
+        activerecord: 5.0
