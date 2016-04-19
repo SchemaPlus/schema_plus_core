@@ -1,7 +1,6 @@
 [![Gem Version](https://badge.fury.io/rb/schema_plus_core.svg)](http://badge.fury.io/rb/schema_plus_core)
-[![Build Status](https://secure.travis-ci.org/SchemaPlus/schema_plus_core.svg)](http://travis-ci.org/SchemaPlus/schema_plus_core)
+[![Build Status](https://secure.travis-ci.org/SchemaPlus/schema_plus_core.svg)](https://travis-ci.org/SchemaPlus/schema_plus_core.svg?branch=activerecord-5.0)
 [![Coverage Status](https://img.shields.io/coveralls/SchemaPlus/schema_plus_core.svg)](https://coveralls.io/r/SchemaPlus/schema_plus_core)
-[![Dependency Status](https://gemnasium.com/lomba/schema_plus_core.svg)](https://gemnasium.com/SchemaPlus/schema_plus_core)
 
 # SchemaPlus::Core
 
