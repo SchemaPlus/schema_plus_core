@@ -16,7 +16,7 @@ module SchemaPlus
           # expressions don't work well in AR anyway.  (hence
           # schema_plus_default_expr )
           #
-          def prepare_column_options(column, types) # :nodoc:
+          def prepare_column_options(column, *) # :nodoc:
             spec = super
             spec[:default] = "%q{#{column.default_function}}" if column.default_function
             spec
