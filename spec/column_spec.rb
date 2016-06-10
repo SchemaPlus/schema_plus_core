@@ -39,7 +39,7 @@ describe SchemaMonkey::Middleware::Migration::Column do
 
     context "when add ordinary column" do
       When { migration.create_table("things") { |t| t.integer "test_column" } }
-      Then { expect(spy).to eq [
+      Then { expect(spy).to match_array [
         { column_name: "id", type: :primary_key, implements_reference: nil },
         { column_name: "test_column", type: :integer, implements_reference: nil }
       ] }
@@ -49,7 +49,7 @@ describe SchemaMonkey::Middleware::Migration::Column do
 
       context "when add reference using t.#{method}" do
         When { migration.create_table("things") { |t| t.send method, "test_reference" } }
-        Then { expect(spy).to eq [
+        Then { expect(spy).to match_array [
           { column_name: "id", type: :primary_key, implements_reference: nil },
           { column_name: "test_reference_id", type: :reference, implements_reference: nil },
           { column_name: "test_reference_id", type: :integer, implements_reference: true }
@@ -58,7 +58,7 @@ describe SchemaMonkey::Middleware::Migration::Column do
 
       context "when add polymorphic reference using t.#{method}" do
         When { migration.create_table("things") { |t| t.send method, "test_reference", polymorphic: true } }
-        Then { expect(spy).to eq [
+        Then { expect(spy).to match_array [
           { column_name: "id", type: :primary_key, implements_reference: nil },
           { column_name: "test_reference_id", type: :reference, implements_reference: nil },
           { column_name: "test_reference_id", type: :integer, implements_reference: true },
@@ -76,7 +76,7 @@ describe SchemaMonkey::Middleware::Migration::Column do
       context "when add reference using migration.add_reference" do
 
         When { migration.add_reference("things", "test_reference") }
-        Then { expect(spy).to eq [
+        Then { expect(spy).to match_array [
           { column_name: "test_reference_id", type: :reference, implements_reference: nil },
           { column_name: "test_reference_id", type: :integer, implements_reference: true }
         ] }
@@ -87,7 +87,7 @@ describe SchemaMonkey::Middleware::Migration::Column do
         When {
           migration.add_reference("things", "test_reference", polymorphic: true)
         }
-        Then { expect(spy).to eq [
+        Then { expect(spy).to match_array [
           { column_name: "test_reference_id", type: :reference, implements_reference: nil },
           { column_name: "test_reference_id", type: :integer, implements_reference: true },
           { column_name: "test_reference_type", type: :string, implements_reference: true }
