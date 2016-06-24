@@ -446,6 +446,7 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
   The base method appends the collection of SchemaDump::Table::Index objects to `env.table.indexes`
 
 ## History
+* 1.0.1 Explicit gem dependencies
 * 1.0.0 Clean up `SchemaDump::Table::Column` and `SchemaDump::Table::Index` API:  `#options` is now a hash and `#comments` is now an array; no longer have `add_option` and `add_comment` methods.
 * 0.6.2 Bug fix: don't choke on INHERITANCE in table definition (#7).  Thanks to [@ADone](https://github.com/ADone).
 * 0.6.1 Make sure to require pathname (#5)
