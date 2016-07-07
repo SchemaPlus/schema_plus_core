@@ -6,11 +6,11 @@
 
 SchemaPlus::Core creates an internal extension API to ActiveRecord.  The idea is that:
 
-* ShemaPlus::Core does the monkey-patching so clients don't have to know too much about the internal of ActiveRecord.
+* SchemaPlus::Core does the monkey-patching so clients don't have to know too much about the internal of ActiveRecord.
 
 * SchemaPlus::Core's extension API is consistent across the various connection adapters, so clients don't have to figure out how to extend each connection adapter independently.
 
-* SchemPlus::Core's extension API intends to remain reasonably stable even as ActiveRecord changes.
+* SchemaPlus::Core's extension API intends to remain reasonably stable even as ActiveRecord changes.
 
 By itself, SchemaPlus::Core does not change any behavior or add any external features to ActiveRecord.  It just makes the API available to clients.
 
