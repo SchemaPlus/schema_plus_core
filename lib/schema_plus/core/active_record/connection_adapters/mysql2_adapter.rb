@@ -48,7 +48,7 @@ module SchemaPlus
 
           def exec_query(sql, name='SQL', binds=[], prepare: false)
             SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, query_name: name, binds: binds, prepare: prepare) { |env|
-              env.result = super env.sql, env.query_name, env.binds, env.prepare
+              env.result = super env.sql, env.query_name, env.binds, prepare: env.prepare
             }.result
           end
 
