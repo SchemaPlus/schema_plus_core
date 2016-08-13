@@ -22,9 +22,9 @@ module SchemaPlus
             end
           end
 
-          def exec_query(sql, name=nil, binds=[])
-            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, query_name: name, binds: binds) { |env|
-              env.result = super env.sql, env.query_name, env.binds
+          def exec_query(sql, name=nil, binds=[], prepare: false)
+            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, query_name: name, binds: binds, prepare: prepare) { |env|
+              env.result = super env.sql, env.query_name, env.binds, prepare: env.prepare
             }.result
           end
 

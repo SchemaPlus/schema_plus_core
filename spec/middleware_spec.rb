@@ -49,7 +49,7 @@ describe SchemaMonkey::Middleware do
       Then { expect_middleware(enable: {type: :reference}, env: {column_name: "ref_id"}) { migration.add_reference("things", "ref") } }
 
       Given(:change) {
-        Class.new ::ActiveRecord::Migration do
+        Class.new ::ActiveRecord::Migration[5.0] do
           def change
             change_table("things") do |t|
               t.integer "column2"

@@ -3,7 +3,7 @@ module SchemaPlus
     module Middleware
       module Query
         module Exec
-          ENV = [:connection, :sql, :query_name, :binds, :result]
+          ENV = [:connection, :sql, :query_name, :binds, :prepare, :result]
         end
       end
 
