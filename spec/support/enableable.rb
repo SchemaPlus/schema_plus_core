@@ -1,3 +1,5 @@
+require "its-it"
+
 module Enableable
 
   def enabled_middleware(root, env)

@@ -16,12 +16,9 @@ module SchemaPlus
           ENV = [:connection, :query_name, :table_name, :index_definitions]
         end
 
-        module Tables
-          # :database and :like are only for mysql
-          # :table_name is only for sqlite3
-          ENV = [:connection, :query_name, :table_name, :database, :like, :tables]
+        module DataSources
+          ENV = [:connection, :sources]
         end
-
       end
 
       module Migration

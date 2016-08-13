@@ -28,8 +28,8 @@ describe SchemaMonkey::Middleware do
       Then { expect_middleware { ActiveRecord::Schema.define { } } }
     end
 
-    context TestReporter::Middleware::Schema::Tables do
-      Then { expect_middleware { connection.tables() } }
+    context TestReporter::Middleware::Schema::DataSources do
+      Then { expect_middleware { connection.data_sources() } }
     end
 
     context TestReporter::Middleware::Schema::Indexes do

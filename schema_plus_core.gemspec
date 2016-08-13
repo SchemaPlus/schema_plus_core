@@ -28,4 +28,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "schema_dev", "~> 3.7"
   gem.add_development_dependency "simplecov"
   gem.add_development_dependency "simplecov-gem-profile"
+  gem.add_development_dependency "its-it"
 end

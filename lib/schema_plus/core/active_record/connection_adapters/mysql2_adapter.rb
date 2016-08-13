@@ -34,10 +34,10 @@ module SchemaPlus
             }.index_definitions
           end
 
-          def tables(query_name=nil, database=nil, like=nil)
-            SchemaMonkey::Middleware::Schema::Tables.start(connection: self, query_name: query_name, database: database, like: like, tables: []) { |env|
-              env.tables += super env.query_name, env.database, env.like
-            }.tables
+          def data_sources
+            SchemaMonkey::Middleware::Schema::DataSources.start(connection: self, sources: []) { |env|
+              env.sources += super
+            }.sources
           end
 
           def select_rows(sql, name=nil, binds=[])
