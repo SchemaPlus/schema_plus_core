@@ -25,6 +25,7 @@ describe SchemaMonkey::Middleware do
   context SchemaMonkey::Middleware::Schema do
 
     context TestReporter::Middleware::Schema::Define do
+      ActiveRecord::Schema.define {}
       Then { expect_middleware { ActiveRecord::Schema.define { } } }
     end
 
@@ -136,16 +137,11 @@ describe SchemaMonkey::Middleware do
       Then { expect_middleware(env: {table: { name: "things"} }) { dump }  }
     end
 
-    context TestReporter::Middleware::Dumper::Indexes do
-      Then { expect_middleware(env: {table: { name: "things"} }) { dump }  }
-    end
-
     private
 
     def dump
       ::ActiveRecord::SchemaDumper.dump(connection, StringIO.new)
     end
-
   end
 
   def table_statement(method, *args)
