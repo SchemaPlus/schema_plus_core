@@ -25,11 +25,12 @@ describe SchemaMonkey::Middleware do
   context SchemaMonkey::Middleware::Schema do
 
     context TestReporter::Middleware::Schema::Define do
+      ActiveRecord::Schema.define {}
       Then { expect_middleware { ActiveRecord::Schema.define { } } }
     end
 
-    context TestReporter::Middleware::Schema::Tables do
-      Then { expect_middleware { connection.tables() } }
+    context TestReporter::Middleware::Schema::DataSources do
+      Then { expect_middleware { connection.data_sources() } }
     end
 
     context TestReporter::Middleware::Schema::Indexes do
@@ -48,7 +49,7 @@ describe SchemaMonkey::Middleware do
       Then { expect_middleware(enable: {type: :reference}, env: {column_name: "ref_id"}) { migration.add_reference("things", "ref") } }
 
       Given(:change) {
-        Class.new ::ActiveRecord::Migration do
+        Class.new ::ActiveRecord::Migration[5.0] do
           def change
             change_table("things") do |t|
               t.integer "column2"
@@ -136,16 +137,11 @@ describe SchemaMonkey::Middleware do
       Then { expect_middleware(env: {table: { name: "things"} }) { dump }  }
     end
 
-    context TestReporter::Middleware::Dumper::Indexes do
-      Then { expect_middleware(env: {table: { name: "things"} }) { dump }  }
-    end
-
     private
 
     def dump
       ::ActiveRecord::SchemaDumper.dump(connection, StringIO.new)
     end
-
   end
 
   def table_statement(method, *args)

@@ -63,20 +63,22 @@ module SchemaPlus
           stream.puts " do |t|"
           typelen = columns.map{|col| col.type.length}.max
           namelen = columns.map{|col| col.name.length}.max
+          indexes
           columns.each do |column|
             stream.write "    "
             column.assemble(stream, typelen, namelen)
+            stream.puts ""
+          end
+          stream.puts "" unless indexes.empty?
+          indexes.each do |index|
+            stream.write "    t.index "
+            index.assemble(stream)
             stream.puts ""
           end
           statements.each do |statement|
             stream.puts "    #{statement}"
           end
           stream.puts "  end"
-          indexes.each do |index|
-            stream.write "  add_index #{pname.inspect}, "
-            index.assemble(stream)
-            stream.puts ""
-          end
           trailer.each do |statement|
             stream.puts "  #{statement}"
           end

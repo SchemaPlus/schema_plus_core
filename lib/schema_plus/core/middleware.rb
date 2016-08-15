@@ -3,7 +3,7 @@ module SchemaPlus
     module Middleware
       module Query
         module Exec
-          ENV = [:connection, :sql, :query_name, :binds, :result]
+          ENV = [:connection, :sql, :query_name, :binds, :prepare, :result]
         end
       end
 
@@ -16,12 +16,9 @@ module SchemaPlus
           ENV = [:connection, :query_name, :table_name, :index_definitions]
         end
 
-        module Tables
-          # :database and :like are only for mysql
-          # :table_name is only for sqlite3
-          ENV = [:connection, :query_name, :table_name, :database, :like, :tables]
+        module DataSources
+          ENV = [:connection, :sources]
         end
-
       end
 
       module Migration
@@ -70,9 +67,6 @@ module SchemaPlus
           ENV = [:dumper, :connection, :dump]
         end
         module Table
-          ENV = [:dumper, :connection, :dump, :table]
-        end
-        module Indexes
           ENV = [:dumper, :connection, :dump, :table]
         end
       end
