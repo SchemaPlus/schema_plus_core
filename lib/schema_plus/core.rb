@@ -9,7 +9,6 @@ module SchemaPlus
         DIR = Pathname.new(__FILE__).dirname + "core/active_record/connection_adapters"
         autoload :PostgresqlAdapter,     DIR + "postgresql_adapter"
         autoload :Mysql2Adapter,         DIR + "mysql2_adapter"
-        autoload :AbstractMysqlAdapter,  DIR + "abstract_mysql_adapter"
         autoload :Sqlite3Adapter,        DIR + "sqlite3_adapter"
       end
     end

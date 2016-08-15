@@ -66,8 +66,9 @@ module SchemaPlus
               env.table.pname = m[:name]
               env.table.options = m[:options].strip
               env.table.trailer = m[:trailer].split("\n").map(&:strip).reject{|s| s.blank?}
-              env.table.columns = m[:columns].strip.split("\n").map { |col|
-                m = col.strip.match %r{
+              table_objects = m[:columns].strip.split("\n").map { |col|
+                cs = col.strip
+                m = cs.match %r{
                 ^
                 t\.(?<type>\S+) \s*
                   [:'"](?<name>[^"\s]+)[,"]? \s*
@@ -75,29 +76,30 @@ module SchemaPlus
                   (?<options>.*)
                 $
                 }x
-                SchemaDump::Table::Column.new name: m[:name], type: m[:type], options: eval("{" + m[:options] + "}"), comments: []
-              }
+                if !m.nil?
+                  SchemaDump::Table::Column.new name: m[:name], type: m[:type], options: eval("{" + m[:options] + "}"), comments: []
+                else
+                  m = cs.match %r{
+                  ^
+                  t\.index \s*
+                    \[(?<index_cols>.*?)\] \s*
+                    , \s*
+                    name\: \s* [:'"](?<name>[^"\s]+)[,"]? \s*
+                    ,? \s*
+                    (?<options>.*)
+                  $
+                  }x
+                  if m.nil?
+                    nil
+                  else
+                    index_cols = m[:index_cols].tr(%q{'":}, '').strip.split(/\s*,\s*/)
+                    SchemaDump::Table::Index.new name: m[:name], columns: index_cols, options: eval("{#{m[:options]}}")
+                  end
+                end
+              }.reject { |o| o.nil? }
+              env.table.columns = table_objects.select { |o| o.is_a? SchemaDump::Table::Column }
+              env.table.indexes = table_objects.select { |o| o.is_a? SchemaDump::Table::Index }
             end
-          end
-        end
-
-        def indexes(table, _)
-          SchemaMonkey::Middleware::Dumper::Indexes.start(dumper: self, connection: @connection, dump: @dump, table: @dump.tables[table]) do |env|
-            stream = StringIO.new
-            super env.table.name, stream
-            env.table.indexes += stream.string.split("\n").map { |string|
-              m = string.strip.match %r{
-              ^
-              add_index \s*
-                [:'"](?<table>[^'"\s]+)['"]? \s* , \s*
-                (?<columns>.*) \s*
-                name: \s* [:'"](?<name>[^'"\s]+)['"]? \s*
-                (, \s* (?<options>.*))?
-                $
-              }x
-              columns = m[:columns].tr(%q{[]'":}, '').strip.split(/\s*,\s*/)
-              SchemaDump::Table::Index.new name: m[:name], columns: columns, options: eval("{#{m[:options]}}")
-            }
           end
         end
       end
