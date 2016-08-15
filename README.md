@@ -19,16 +19,6 @@ SchemaPlus::Core is a client of [schema_monkey](https://github.com/SchemaPlus/sc
 
 ## Compatibility
 
-<aside class="warning">
-Due to breaking changes in Rails 5, SchemaPlus can no longer support ActiveRecord 4.2 and ActiveRecord 5.0 in the same time. Therefore, SchemaPlus::Core 2.0 will no longer support ActiveRecord 4.2. Support for ActiveRecord 4.2 will continue in the 1.x branch.
-</aside>
-
-### Breaking changes in version 2.0 ###
-
-
-* SchemaPlus::Core::Schema::Tables middleware was replaced by SchemaPlus::Core::DataSources. Parameters have also changed.
-* SchemaPlus::Core::Dumper::Indexes middleware is removed. Instead SchemaPlus::Core::Dumper::Table sets both columns and indexes on env.table.
-
 SchemaPlus::Core is tested on:
 
 <!-- SCHEMA_DEV: MATRIX - begin -->
@@ -37,6 +27,15 @@ SchemaPlus::Core is tested on:
 
 <!-- SCHEMA_DEV: MATRIX - end -->
 
+<aside class="warning">
+As of version 2.0.0, `schema_plus_core` supports only ActiveRecord >= 5.0.
+ActiveRecord 4.2.x is supported in version 1.x, maintained in the 1.x
+branch.
+
+### Breaking changes in version 2.0 ###
+
+* `SchemaPlus::Core::Schema::Tables` middleware was replaced by `SchemaPlus::Core::DataSources`. Parameters have also changed.
+* `SchemaPlus::Core::Dumper::Indexes` middleware was removed; instead `SchemaPlus::Core::Dumper::Table` sets both columns and indexes on env.table.
 
 ## Installation
 
@@ -440,7 +439,8 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
   2. The base method sets *both* `env.table.columns` and `env.tables.indexes`.
 
 ## History
-* 2.0.0 Added AR5 support, removed AR4.2 support.
+
+* 2.0.0 Added AR5 support, removed AR4.2 support.  Thanks to [@boazy](https://github.com/boazy).
 * 1.0.0 Clean up `SchemaDump::Table::Column` and `SchemaDump::Table::Index` API:  `#options` is now a hash and `#comments` is now an array; no longer have `add_option` and `add_comment` methods.
 * 0.6.2 Bug fix: don't choke on INHERITANCE in table definition (#7).  Thanks to [@ADone](https://github.com/ADone).
 * 0.6.1 Make sure to require pathname (#5)
