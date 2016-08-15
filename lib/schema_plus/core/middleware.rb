@@ -69,9 +69,6 @@ module SchemaPlus
         module Table
           ENV = [:dumper, :connection, :dump, :table]
         end
-        module Indexes
-          ENV = [:dumper, :connection, :dump, :table]
-        end
       end
 
       module Model

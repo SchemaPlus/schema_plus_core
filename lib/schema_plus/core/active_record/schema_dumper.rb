@@ -99,7 +99,6 @@ module SchemaPlus
               }.reject { |o| o.nil? }
               env.table.columns = table_objects.select { |o| o.is_a? SchemaDump::Table::Column }
               env.table.indexes = table_objects.select { |o| o.is_a? SchemaDump::Table::Index }
-              # TODO: Add indices
             end
           end
         end
