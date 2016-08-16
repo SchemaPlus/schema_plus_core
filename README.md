@@ -337,12 +337,13 @@ Stacks around low-level query execution
 
   Callback stack wraps the emission of sql to the underlying dbms gem.
 
-      Env Field    | Description | Initialized
-    --- | --- | ---
-    `:result` | The result of the database query | *unset*
-    `:caller`     | The ActiveRecord::SchemaCreation instance | *context*
-    `:sql`        | The SQL string | *context*
-    `:binds`      | Values to substitute into the SQL string
+    Env Field     | Description                                  | Initialized
+    ------------- | -------------------------------------------- | -----------
+    `:result`     | The result of the database query             | *unset*
+    `:caller`     | The ActiveRecord::SchemaCreation instance    | *context*
+    `:sql`        | The SQL string                               | *context*
+    `:binds`      | Values to substitute into the SQL string     |
+    `:prepare`    | Whether to cache the prepared statement      |
     `:query_name` | Label sometimes used by ActiveRecord logging | *arg*
 
 
