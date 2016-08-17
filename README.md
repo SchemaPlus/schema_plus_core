@@ -440,6 +440,7 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
 
 ## History
 
+* 2.0.1 Tighten up AR dependency.  Thanks to [@myabc](https://github.com/myabc).
 * 2.0.0 Added AR5 support, removed AR4.2 support.  Thanks to [@boazy](https://github.com/boazy).
 * 1.0.2 Missing require
 * 1.0.1 Explicit gem dependencies
