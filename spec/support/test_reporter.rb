@@ -28,6 +28,7 @@ module TestReporter
       module Define ;                   include Notify ; end
       module Indexes ;                  include Notify ; end
       module DataSources ;              include Notify ; end
+      module Views ;                    include Notify ; end
     end
 
     module Migration

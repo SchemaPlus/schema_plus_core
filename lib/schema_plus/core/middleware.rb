@@ -17,7 +17,11 @@ module SchemaPlus
         end
 
         module DataSources
-          ENV = [:connection, :sources]
+          ENV = [:connection, :sources, :where_constraints]
+        end
+
+        module Views
+          ENV = [:connection, :views, :where_constraints]
         end
       end
 

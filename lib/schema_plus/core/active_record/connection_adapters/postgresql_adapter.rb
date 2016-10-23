@@ -3,6 +3,13 @@ module SchemaPlus
     module ActiveRecord
       module ConnectionAdapters
         module PostgresqlAdapter
+          def _data_sources_sql(types = nil)
+            types ||= %i[table view materialized_view]
+            type_map = { table: 'r', view: 'v', materialized_view: 'm' }
+            types.map! {|type| type_map[type]}
+            types.compact!
+            _pg_relations_sql(types)
+          end
 
           # quick hack fix quoting of column default functions to allow eval() when we
           # capture the stream.
@@ -65,9 +72,15 @@ module SchemaPlus
           end
 
           def data_sources
-            SchemaMonkey::Middleware::Schema::DataSources.start(connection: self, sources: []) { |env|
-              env.sources += super
+            SchemaMonkey::Middleware::Schema::DataSources.start(connection: self, sources: [], where_constraints: []) { |env|
+              env.sources += _select_data_sources env.where_constraints
             }.sources
+          end
+
+          def views
+            SchemaMonkey::Middleware::Schema::Views.start(connection: self, views: [], where_constraints: []) { |env|
+              env.views += _select_data_sources env.where_constraints, %i[view materialized_view]
+            }.views
           end
         end
       end
