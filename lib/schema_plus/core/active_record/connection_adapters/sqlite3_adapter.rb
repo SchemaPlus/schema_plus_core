@@ -3,6 +3,19 @@ module SchemaPlus
     module ActiveRecord
       module ConnectionAdapters
         module Sqlite3Adapter
+          def _data_sources_sql(types = nil)
+            supported_types = %i[table view]
+            types = types & supported_types || supported_types
+            if types.length == 0
+              raise 'No supported data source types: please specify at least one of :table, :view'
+            elsif types.length == 1
+              type_query = "type = '#{types.first}'"
+            else
+              type_list = types.map{|x| "'#{x}'"}.join ','
+              type_query = "type IN (#{type_list})"
+            end
+            "SELECT name FROM sqlite_master WHERE #{type_query} AND name <> 'sqlite_sequence'"
+          end
 
           def rename_table(table_name, new_name)
             SchemaMonkey::Middleware::Migration::RenameTable.start(connection: self, table_name: table_name, new_name: new_name) do |env|
@@ -35,9 +48,15 @@ module SchemaPlus
           end
 
           def data_sources
-            SchemaMonkey::Middleware::Schema::DataSources.start(connection: self, sources: []) { |env|
-              env.sources += super
+            SchemaMonkey::Middleware::Schema::DataSources.start(connection: self, sources: [], where_constraints: []) { |env|
+              env.sources += _select_data_sources env.where_constraints
             }.sources
+          end
+
+          def views
+            SchemaMonkey::Middleware::Schema::Views.start(connection: self, views: [], where_constraints: []) { |env|
+              env.views += _select_data_sources env.where_constraints, [:view]
+            }.views
           end
         end
       end

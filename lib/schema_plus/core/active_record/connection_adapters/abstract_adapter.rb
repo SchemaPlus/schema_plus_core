@@ -4,6 +4,18 @@ module SchemaPlus
       module ConnectionAdapters
         module AbstractAdapter
 
+          def _append_where_constraints(sql, where_constraints)
+            where_constraints.each do |where_constraints|
+              sql << " AND (#{where_constraints})"
+            end
+          end
+
+          def _select_data_sources(where_constraints = [], types = nil)
+            sql = _data_sources_sql types
+            _append_where_constraints sql, where_constraints
+            select_values sql, 'SCHEMA'
+          end
+
           def add_column(table_name, name, type, options = {})
             options = options.deep_dup
             SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :add, table_name: table_name, column_name: name, type: type, implements_reference: options.delete(:_implements_reference), options: options) do |env|

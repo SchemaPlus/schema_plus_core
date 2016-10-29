@@ -1,4 +1,5 @@
 require "schema_monkey"
+require "schema_plus_compatibility"
 require 'its-it'
 require "pathname"
 

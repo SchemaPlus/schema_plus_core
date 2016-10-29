@@ -4,6 +4,26 @@ module SchemaPlus
       module ConnectionAdapters
         module Mysql2Adapter
 
+          def _data_sources_sql(types = nil)
+            sql = "SELECT table_name FROM information_schema.tables\n"
+            sql << "WHERE table_schema = #{quote(@config[:database])}"
+            if types
+              supported_types = types & %i[table view]
+              if supported_types.length == 0
+                raise 'No supported data source types: please specify at least one of :table, :view'
+              elsif supported_types.length == 1
+                # If both tables and views are requested, no need to add an extra clause
+                if supported_types[0] == :table
+                  table_type = 'BASE_TABLE'
+                else
+                  table_type = 'VIEW'
+                end
+                sql << " AND table_type = '#{table_type}'"
+              end
+            end
+            sql
+          end
+
           def change_column(table_name, name, type, options = {})
             SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :change, table_name: table_name, column_name: name, type: type, options: options.deep_dup) do |env|
               super env.table_name, env.column_name, env.type, env.options
@@ -35,9 +55,15 @@ module SchemaPlus
           end
 
           def data_sources
-            SchemaMonkey::Middleware::Schema::DataSources.start(connection: self, sources: []) { |env|
-              env.sources += super
+            SchemaMonkey::Middleware::Schema::DataSources.start(connection: self, sources: [], where_constraints: []) { |env|
+              env.sources += _select_data_sources env.where_constraints
             }.sources
+          end
+
+          def views
+            SchemaMonkey::Middleware::Schema::Views.start(connection: self, views: [], where_constraints: []) { |env|
+              env.views += _select_data_sources env.where_constraints, [:view]
+            }.views
           end
 
           def select_rows(sql, name=nil, binds=[])

@@ -6,7 +6,7 @@ describe SchemaMonkey::Middleware do
   let(:connection) { ::ActiveRecord::Base.connection }
 
   Given {
-    migration.create_table "things"
+    migration.create_table 'things'
     class Thing < ActiveRecord::Base ; end
   }
 
@@ -30,7 +30,12 @@ describe SchemaMonkey::Middleware do
     end
 
     context TestReporter::Middleware::Schema::DataSources do
-      Then { expect_middleware { connection.data_sources() } }
+      Given { migration.create_table 'other' }
+      Then { expect_middleware(env: { sources: contain_exactly('things', 'other')}) { connection.data_sources } }
+    end
+
+    context TestReporter::Middleware::Schema::Views do
+      Then { expect_middleware { connection.views } }
     end
 
     context TestReporter::Middleware::Schema::Indexes do
@@ -169,6 +174,18 @@ describe SchemaMonkey::Middleware do
         else
           expect(actual).to match val
         end
+      when Proc
+        if bool
+          return val.call(actual)
+        else
+          expect(actual).to val.call
+        end
+      when RSpec::Matchers::BuiltIn::BaseMatcher
+          if bool
+            return val.matches? actual
+          else
+            expect(actual).to val
+          end
       else
         if bool
           return false unless actual == val
@@ -180,10 +197,10 @@ describe SchemaMonkey::Middleware do
     true if bool
   end
 
-  def expect_middleware(env: {}, enable: {})
+  def expect_middleware(env: {}, enable: {}, before: nil)
     middleware = described_class
     begin
-      middleware.enable(-> (_env) { env_match(_env, enable, bool: true) })
+      middleware.enable -> _env { env_match(_env, enable, bool: true) }
       expect { yield }.to raise_error { |error|
         expect(error).to be_a TestReporter::Called
         expect(error.middleware).to eq middleware
