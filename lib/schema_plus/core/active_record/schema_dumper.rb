@@ -40,7 +40,7 @@ module SchemaPlus
 
         def tables(_)
           SchemaMonkey::Middleware::Dumper::Tables.start(dumper: self, connection: @connection, dump: @dump) do |env|
-            super nil
+            super
           end
         end
 
