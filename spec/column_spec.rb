@@ -26,6 +26,15 @@ describe SchemaMonkey::Middleware::Migration::Column do
   context TestImplementsReference::Middleware::Migration::Column do
     let (:spy) { described_class.const_get(:SPY) }
 
+    let (:pk_type) do
+      if ActiveRecord.version >= Gem::Version.new('5.1') &&
+         ActiveRecord::Base.connection.adapter_name =~ /mysql|postgresql/i
+        :bigint
+      else
+        :integer
+      end
+    end
+
     around(:each) do |example|
       middleware = described_class
       begin
@@ -52,17 +61,17 @@ describe SchemaMonkey::Middleware::Migration::Column do
         Then { expect(spy).to match_array [
           { column_name: "id", type: :primary_key, implements_reference: nil },
           { column_name: "test_reference_id", type: :reference, implements_reference: nil },
-          { column_name: "test_reference_id", type: :integer, implements_reference: true }
+          { column_name: "test_reference_id", type: pk_type, implements_reference: true }
         ] }
       end
 
       context "when add polymorphic reference using t.#{method}" do
-        When { migration.create_table("things") { |t| t.send method, "test_reference", polymorphic: true } }
+        When { migration.create_table("things") { |t| t.send method, "test_reference", polymorphic: true, index: true } }
         Then { expect(spy).to match_array [
           { column_name: "id", type: :primary_key, implements_reference: nil },
           { column_name: "test_reference_id", type: :reference, implements_reference: nil },
-          { column_name: "test_reference_id", type: :integer, implements_reference: true },
-          { column_name: "test_reference_type", type: :string, implements_reference: true }
+          { column_name: "test_reference_id", type: pk_type, implements_reference: true },
+          { column_name: "test_reference_type", type: :string, implements_reference: nil }
         ] }
       end
     end
@@ -78,7 +87,7 @@ describe SchemaMonkey::Middleware::Migration::Column do
         When { migration.add_reference("things", "test_reference") }
         Then { expect(spy).to match_array [
           { column_name: "test_reference_id", type: :reference, implements_reference: nil },
-          { column_name: "test_reference_id", type: :integer, implements_reference: true }
+          { column_name: "test_reference_id", type: pk_type, implements_reference: true }
         ] }
       end
 
@@ -89,8 +98,8 @@ describe SchemaMonkey::Middleware::Migration::Column do
         }
         Then { expect(spy).to match_array [
           { column_name: "test_reference_id", type: :reference, implements_reference: nil },
-          { column_name: "test_reference_id", type: :integer, implements_reference: true },
-          { column_name: "test_reference_type", type: :string, implements_reference: true }
+          { column_name: "test_reference_id", type: pk_type, implements_reference: true },
+          { column_name: "test_reference_type", type: :string, implements_reference: nil }
         ] }
       end
 
