@@ -4,7 +4,6 @@
 # schema_dev gets run.
 ---
 sudo: false
-dist: precise
 rvm:
 - 2.3.1
 gemfile:
