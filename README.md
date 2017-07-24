@@ -439,7 +439,7 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
   1. When the stack is called, `env.dump.tables[env.table.name]` contains the `env.table` object.
   2. The base method sets *both* `env.table.columns` and `env.tables.indexes`.
 
-## History
+## Release Notes
 
 * 2.0.1 Tighten up AR dependency.  Thanks to [@myabc](https://github.com/myabc).
 * 2.0.0 Added AR5 support, removed AR4.2 support.  Thanks to [@boazy](https://github.com/boazy).
