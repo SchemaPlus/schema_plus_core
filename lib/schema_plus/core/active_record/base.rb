@@ -32,7 +32,7 @@ module SchemaPlus
             end.result
           end
 
-          def has_and_belongs_to_many(name, scope = nil, options = {}, &extension)
+          def has_and_belongs_to_many(name, scope = nil, **options, &extension)
             SchemaMonkey::Middleware::Model::Association::Declaration.start(model: self, name: name, scope: scope, options: options, extension: extension) do |env|
               env.result = super(env.name, env.scope, env.options, &env.extension)
             end.result

@@ -117,6 +117,16 @@ describe SchemaMonkey::Middleware do
         expect_middleware { Thingamajig.belongs_to :another_thing, class_name: Thing.name }
         expect_middleware { Thingamajig.has_and_belongs_to_many :other_things, class_name: Thing.name }
       end
+
+      Then do
+        class TestThingamajig < ActiveRecord::Base
+          has_and_belongs_to_many :other_things, join_table: 'another_table'
+        end
+
+        expect(
+          TestThingamajig.reflect_on_association(:other_things).options[:join_table]
+        ).to eq('another_table')
+      end
     end
 
   end
