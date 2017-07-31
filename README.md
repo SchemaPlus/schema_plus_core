@@ -441,6 +441,7 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
 
 ## Release Notes
 
+* 2.1.1 Bug fix: Don't lose habtm options.  Thanks to [@iagopiimenta ](https://github.com/iagopiimenta)
 * 2.1.0 Added AR5.1 support.  Thanks to [@iagopiimenta ](https://github.com/iagopiimenta)
 * 2.0.1 Tighten up AR dependency.  Thanks to [@myabc](https://github.com/myabc).
 * 2.0.0 Added AR5 support, removed AR4.2 support.  Thanks to [@boazy](https://github.com/boazy).
