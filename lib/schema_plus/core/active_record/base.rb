@@ -20,13 +20,13 @@ module SchemaPlus
           # don't have a documented return value.  But at least one gem
           # (https://github.com/hzamani/active_record-acts_as/blob/master/lib/active_record/acts_as/relation.rb#L14)
           # relies on the undocumented return value.
-          def has_many(name, scope = nil, options = {}, &extension)
+          def has_many(name, scope = nil, **options, &extension)
             SchemaMonkey::Middleware::Model::Association::Declaration.start(model: self, name: name, scope: scope, options: options, extension: extension) do |env|
               env.result = super(env.name, env.scope, env.options, &env.extension)
             end.result
           end
 
-          def has_one(name, scope = nil, options = {}, &extension)
+          def has_one(name, scope = nil, **options, &extension)
             SchemaMonkey::Middleware::Model::Association::Declaration.start(model: self, name: name, scope: scope, options: options, extension: extension) do |env|
               env.result = super(env.name, env.scope, env.options, &env.extension)
             end.result
@@ -38,7 +38,7 @@ module SchemaPlus
             end.result
           end
 
-          def belongs_to(name, scope = nil, options = {}, &extension)
+          def belongs_to(name, scope = nil, **options, &extension)
             SchemaMonkey::Middleware::Model::Association::Declaration.start(model: self, name: name, scope: scope, options: options, extension: extension) do |env|
               env.result = super(env.name, env.scope, env.options, &env.extension)
             end.result
