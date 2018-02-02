@@ -10,7 +10,7 @@ module SchemaPlus
           # AR's PostgresqlAdapter#prepare_column_options wraps the
           # function in double quotes, which doesn't work because the
           # function itself may have doublequotes in it which don't get
-          # escaped properly.  
+          # escaped properly.
           #
           # Arguably that's a bug in AR, but then again default function
           # expressions don't work well in AR anyway.  (hence
@@ -58,9 +58,9 @@ module SchemaPlus
             }.result
           end
 
-          def indexes(table_name, query_name=nil)
-            SchemaMonkey::Middleware::Schema::Indexes.start(connection: self, table_name: table_name, query_name: query_name, index_definitions: []) { |env|
-              env.index_definitions += super env.table_name, env.query_name
+          def indexes(table_name)
+            SchemaMonkey::Middleware::Schema::Indexes.start(connection: self, table_name: table_name, index_definitions: []) { |env|
+              env.index_definitions += super env.table_name
             }.index_definitions
           end
 

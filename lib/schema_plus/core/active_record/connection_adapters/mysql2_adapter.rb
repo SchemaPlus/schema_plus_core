@@ -28,9 +28,9 @@ module SchemaPlus
             end
           end
 
-          def indexes(table_name, query_name=nil)
-            SchemaMonkey::Middleware::Schema::Indexes.start(connection: self, table_name: table_name, query_name: query_name, index_definitions: []) { |env|
-              env.index_definitions += super env.table_name, env.query_name
+          def indexes(table_name)
+            SchemaMonkey::Middleware::Schema::Indexes.start(connection: self, table_name: table_name, index_definitions: []) { |env|
+              env.index_definitions += super env.table_name
             }.index_definitions
           end
 
@@ -73,4 +73,3 @@ module SchemaPlus
     end
   end
 end
-

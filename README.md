@@ -128,7 +128,6 @@ Stacks for general operations queries pertaining to the entire database schema:
     `:index_definitions` | The result of the lookup                     | `[]`
     `:connection`        | The current ActiveRecord connection          | *context*
     `:table_name`        | The name of the table to query               | *arg*
-    `:query_name`        | Label sometimes used by ActiveRecord logging | *arg*
 
   The base implementation appends its results to `env.index_definitions`
 
