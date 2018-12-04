@@ -35,6 +35,24 @@ module SchemaPlus
             end
           end
 
+          # replaced version to handle array of columns with expressions
+          def quoted_columns_for_index(column_names, **options)
+            output_columns = []
+
+            column_names.each do |column|
+              if column.is_a?(String) && column.include?('(')
+                output_columns << column
+              else
+                quoted = {column.to_sym => quote_column_name(column).dup}
+                output_columns.concat add_options_for_index_columns(quoted, options).values
+              end
+            end
+
+            output_columns
+          end
+          private :quoted_columns_for_index
+
+
           module SchemaCreation
 
             def add_column_options!(sql, options)
