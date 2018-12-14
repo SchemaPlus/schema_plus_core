@@ -82,6 +82,15 @@ describe SchemaMonkey::Middleware::Dumper do
 
   context TestDumper::Middleware::Dumper::Tables do
     Then { expect(dump).to match(/create_table "other".*create_table "#{middleware}".*create_table "things"/m) }
+
+    context 'int PK handling in rails 5.2+', postgresql: :only, rails: ['>= 5.2.0'] do
+      before(:each) do
+        migration.create_table "inttable", id: :serial do |t|
+        end
+      end
+
+      Then { expect(dump).to_not match(/create_table "inttable", id: :serial.*default:/m) }
+    end
   end
 
   context TestDumper::Middleware::Dumper::Table do

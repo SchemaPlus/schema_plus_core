@@ -5,7 +5,6 @@ module SchemaPlus
         module PostgreSQL
           module PostgreSQL # need two PostgreSQLs because the first gets stripped by schema_monkey
             module SchemaDumper
-
               # quick hack fix quoting of column default functions to allow eval() when we
               # capture the stream.
               #
@@ -20,7 +19,7 @@ module SchemaPlus
               #
               def prepare_column_options(column, *) # :nodoc:
                 spec = super
-                spec[:default] = "%q{#{column.default_function}}" if column.default_function
+                spec[:default] = "%q{#{column.default_function}}" if column.default_function && !column.serial?
                 spec
               end
 
