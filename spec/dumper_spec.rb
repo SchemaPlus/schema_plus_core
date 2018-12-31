@@ -91,6 +91,20 @@ describe SchemaMonkey::Middleware::Dumper do
 
       Then { expect(dump).to_not match(/create_table "inttable", id: :serial.*default:/m) }
     end
+
+    context 'expression index handling', postgresql: :only do
+      before(:each) do
+        migration.create_table "expressions" do |t|
+          t.string :field
+          t.string :column
+          t.index 'lower(field), id', name: 'index_expression_field'
+          t.index 'lower("column"), id', name: 'index_expression_column'
+        end
+      end
+
+      Then { expect(dump).to match(/index "lower.+field.+, id", :name=>"index_expression_field"/) }
+      Then { expect(dump).to match(/index "lower.+"column\\".+, id", :name=>"index_expression_column"/) }
+    end
   end
 
   context TestDumper::Middleware::Dumper::Table do
