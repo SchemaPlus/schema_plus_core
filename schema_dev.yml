@@ -1,11 +1,13 @@
 ruby:
-    - 2.4.4
-    - 2.5.1
+    - 2.6.8
+    - 2.7.5
 activerecord:
-    - 5.0
-    - 5.1
     - 5.2
+    - 6.0
+    - 6.1
 db:
     - mysql2
     - sqlite3
     - postgresql
+dbversions:
+    postgresql: ['10', '11', '12', '13', '14']
