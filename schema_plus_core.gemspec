@@ -23,12 +23,10 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency "activerecord", ">= 5.2", "< 6.1"
   gem.add_dependency "schema_monkey", "~> 3.0.1"
-  gem.add_dependency "its-it", "~> 1.2"
 
   gem.add_development_dependency "bundler"
   gem.add_development_dependency "rake", "~> 13.0.0"
   gem.add_development_dependency "rspec", "~> 3.0"
   gem.add_development_dependency "rspec-given"
   gem.add_development_dependency "schema_dev", "~> 4.1"
-  gem.add_development_dependency "its-it"
 end

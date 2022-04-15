@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "schema_monkey"
-require 'its-it'
 require "pathname"
 
 module SchemaPlus
