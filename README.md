@@ -443,6 +443,7 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
 
 ## Release Notes
 
+* 3.0.0 Drop AR < 5.2 and add AR 6.0 support. Drop Ruby < 2.5 and add Ruby 3.0 support.
 * 2.2.3 Fix dumping complex expression based indexes in AR 5.x
 * 2.2.2 Fixed dumping tables in postgresql in AR 5.2 when the PK is not a bigint.
 * 2.2.1 Fixed expression index handling in AR5.x.
