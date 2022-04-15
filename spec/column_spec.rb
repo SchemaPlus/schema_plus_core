@@ -29,8 +29,7 @@ describe SchemaMonkey::Middleware::Migration::Column do
     let (:spy) { described_class.const_get(:SPY) }
 
     let (:pk_type) do
-      if ActiveRecord.version >= Gem::Version.new('5.1') &&
-         ActiveRecord::Base.connection.adapter_name =~ /mysql|postgresql/i
+      if ActiveRecord::Base.connection.adapter_name =~ /mysql|postgresql/i
         :bigint
       else
         :integer
