@@ -12,15 +12,15 @@ module SchemaPlus
             end
           end
 
-          def change_column(table_name, name, type, options = {})
+          def change_column(table_name, name, type, **options)
             SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :change, table_name: table_name, column_name: name, type: type, options: options.deep_dup) do |env|
-              super env.table_name, env.column_name, env.type, env.options
+              super env.table_name, env.column_name, env.type, **env.options
             end
           end
 
-          def add_index(table_name, column_names, options={})
+          def add_index(table_name, column_names, options = {})
             SchemaMonkey::Middleware::Migration::Index.start(caller: self, operation: :add, table_name: table_name, column_names: column_names, options: options.deep_dup) do |env|
-              super env.table_name, env.column_names, env.options
+              super env.table_name, env.column_names, **env.options
             end
           end
 

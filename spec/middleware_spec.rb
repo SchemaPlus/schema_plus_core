@@ -32,7 +32,7 @@ describe SchemaMonkey::Middleware do
     end
 
     context TestReporter::Middleware::Schema::DataSources do
-      Then { expect_middleware { connection.data_sources() } }
+      Then { expect_middleware { connection.data_sources } }
     end
 
     context TestReporter::Middleware::Schema::Indexes do
