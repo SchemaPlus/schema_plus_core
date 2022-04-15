@@ -17,7 +17,7 @@ describe SchemaMonkey::Middleware do
 
     context TestReporter::Middleware::Query::Exec do
       Then { expect_middleware(enable: {sql: /SELECT column1/}) { connection.select_values("SELECT column1 FROM things") } }
-      Then { expect_middleware(enable: {sql: /^UPDATE/}) { thing.update_attributes!(column1: 3) } }
+      Then { expect_middleware(enable: {sql: /^UPDATE/}) { thing.update!(column1: 3) } }
       Then { expect_middleware(enable: {sql: /^DELETE/}) { thing.delete } }
     end
   end
@@ -119,6 +119,7 @@ describe SchemaMonkey::Middleware do
       end
 
       Then do
+
         class TestThingamajig < ActiveRecord::Base
           has_and_belongs_to_many :other_things, join_table: 'another_table'
         end
