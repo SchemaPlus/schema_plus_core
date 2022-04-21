@@ -23,7 +23,7 @@ module SchemaPlus
       end
 
       def assemble(stream)
-        stream.puts @initial.join("\n") if initial.any?
+        stream.puts @initial.join("\n")
         assemble_tables(stream)
         final.each do |statement|
           stream.puts "  #{statement}"
@@ -33,7 +33,7 @@ module SchemaPlus
 
       def assemble_tables(stream)
         tsort().each do |table|
-          @tables[table].assemble(stream) if @tables[table]
+          @tables[table].assemble(stream)
         end
       end
 
@@ -96,7 +96,7 @@ module SchemaPlus
               stream.write name.inspect
             else
               pr = name.inspect
-              pr += ',' unless options.blank?
+              pr += ','
               stream.write "%-#{namelen+3}s " % pr
             end
             stream.write options.to_s.sub(/^{(.*)}$/, '\1') unless options.blank?

@@ -36,7 +36,7 @@ module SchemaPlus
           SchemaMonkey::Middleware::Dumper::Initial.start(dumper: self, connection: @connection, dump: @dump, initial: @dump.initial) do |env|
             stream = StringIO.new
             super stream
-            env.dump.initial << stream.string unless stream.string.blank?
+            env.dump.initial << stream.string
           end
         end
 

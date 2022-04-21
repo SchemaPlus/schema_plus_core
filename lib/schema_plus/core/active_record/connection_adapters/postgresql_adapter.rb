@@ -5,7 +5,7 @@ module SchemaPlus
     module ActiveRecord
       module ConnectionAdapters
         module PostgresqlAdapter
-          
+
           def change_column(table_name, name, type, **options)
             SchemaMonkey::Middleware::Migration::Column.start(caller: self, operation: :change, table_name: table_name, column_name: name, type: type, options: options.deep_dup) do |env|
               super env.table_name, env.column_name, env.type, **env.options
