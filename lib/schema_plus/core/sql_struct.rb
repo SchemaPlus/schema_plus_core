@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module SchemaPlus
   module Core
     module SqlStruct
-      IndexComponents = KeyStruct[:name, :type, :columns, :options, :algorithm, :using]
+      IndexComponents = Struct.new(:name, :type, :columns, :options, :algorithm, :using, keyword_init: true)
 
-      class Table < KeyStruct[:command, :name, :body, :options, :quotechar, :inheritance]
+      class Table < Struct.new(:command, :name, :body, :options, :quotechar, :inheritance, keyword_init: true)
 
         INHERITANCE_REGEX = %r{ \s* (?<inheritance>INHERITS \s* \( [^)]* \)) }mxi
 

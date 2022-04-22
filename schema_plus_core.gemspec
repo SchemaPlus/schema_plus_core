@@ -1,4 +1,5 @@
-# coding: utf-8
+# frozen_string_literal: true
+
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'schema_plus/core/version'
@@ -18,16 +19,14 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency "activerecord", "~> 5.0"
-  gem.add_dependency "schema_monkey", "~> 2.1"
-  gem.add_dependency "its-it", "~> 1.2"
+  gem.required_ruby_version = ">= 2.5.0"
 
-  gem.add_development_dependency "bundler", "~> 1.7"
-  gem.add_development_dependency "rake", "~> 10.0"
+  gem.add_dependency "activerecord", ">= 5.2", "< 6.1"
+  gem.add_dependency "schema_monkey", "~> 3.0.1"
+
+  gem.add_development_dependency "bundler"
+  gem.add_development_dependency "rake", "~> 13.0.0"
   gem.add_development_dependency "rspec", "~> 3.0"
   gem.add_development_dependency "rspec-given"
-  gem.add_development_dependency "schema_dev", "~> 3.11"
-  gem.add_development_dependency "simplecov"
-  gem.add_development_dependency "simplecov-gem-profile"
-  gem.add_development_dependency "its-it"
+  gem.add_development_dependency "schema_dev", "~> 4.1"
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SchemaPlus
   module Core
     class SchemaDump
@@ -43,7 +45,8 @@ module SchemaPlus
         @dependencies[tablename].sort.uniq.reject{|t| @dumper.ignored? t}.each(&block)
       end
 
-      class Table < KeyStruct[:name, :pname, :options, :columns, :indexes, :statements, :trailer, :alt]
+      class Table < Struct.new(:name, :pname, :options, :columns, :indexes, :statements, :trailer, :alt,
+                               keyword_init: true)
         def initialize(*args)
           super
           self.columns ||= []
@@ -85,7 +88,7 @@ module SchemaPlus
           stream.puts ""
         end
 
-        class Column < KeyStruct[:name, :type, :options, :comments]
+        class Column < Struct.new(:name, :type, :options, :comments, keyword_init: true)
 
           def assemble(stream, typelen, namelen)
             stream.write "t.%-#{typelen}s " % type
@@ -102,7 +105,7 @@ module SchemaPlus
           end
         end
 
-        class Index < KeyStruct[:name, :columns, :options]
+        class Index < Struct.new(:name, :columns, :options, keyword_init: true)
 
           def assemble(stream)
             stream.write columns.inspect + ", " + {name: name}.merge(options).to_s.sub(/^{(.*)}$/, '\1')

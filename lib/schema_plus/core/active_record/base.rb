@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SchemaPlus
   module Core
     module ActiveRecord
@@ -22,25 +24,25 @@ module SchemaPlus
           # relies on the undocumented return value.
           def has_many(name, scope = nil, **options, &extension)
             SchemaMonkey::Middleware::Model::Association::Declaration.start(model: self, name: name, scope: scope, options: options, extension: extension) do |env|
-              env.result = super(env.name, env.scope, env.options, &env.extension)
+              env.result = super(env.name, env.scope, **env.options, &env.extension)
             end.result
           end
 
           def has_one(name, scope = nil, **options, &extension)
             SchemaMonkey::Middleware::Model::Association::Declaration.start(model: self, name: name, scope: scope, options: options, extension: extension) do |env|
-              env.result = super(env.name, env.scope, env.options, &env.extension)
+              env.result = super(env.name, env.scope, **env.options, &env.extension)
             end.result
           end
 
           def has_and_belongs_to_many(name, scope = nil, **options, &extension)
             SchemaMonkey::Middleware::Model::Association::Declaration.start(model: self, name: name, scope: scope, options: options, extension: extension) do |env|
-              env.result = super(env.name, env.scope, env.options, &env.extension)
+              env.result = super(env.name, env.scope, **env.options, &env.extension)
             end.result
           end
 
           def belongs_to(name, scope = nil, **options, &extension)
             SchemaMonkey::Middleware::Model::Association::Declaration.start(model: self, name: name, scope: scope, options: options, extension: extension) do |env|
-              env.result = super(env.name, env.scope, env.options, &env.extension)
+              env.result = super(env.name, env.scope, **env.options, &env.extension)
             end.result
           end
         end

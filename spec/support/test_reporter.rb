@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TestReporter
 
   class Called < Exception
@@ -15,7 +17,7 @@ module TestReporter
 
     def after(env)
       return unless middleware = enabled_middleware(TestReporter, env)
-      raise Called, middleware: middleware, env: env
+      raise Called.new middleware: middleware, env: env
     end
   end
 

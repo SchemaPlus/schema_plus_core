@@ -1,5 +1,6 @@
+# frozen_string_literal: true
+
 require "schema_monkey"
-require 'its-it'
 require "pathname"
 
 module SchemaPlus
@@ -26,8 +27,6 @@ require_relative "core/schema_dump"
 require_relative "core/sql_struct"
 require_relative "core/version"
 
-if ActiveRecord.version >= Gem::Version.new('5.2')
-  require_relative "core/active_record/connection_adapters/postgresql/schema_dumper"
-end
+require_relative "core/active_record/connection_adapters/postgresql/schema_dumper"
 
 SchemaMonkey.register(SchemaPlus::Core)
