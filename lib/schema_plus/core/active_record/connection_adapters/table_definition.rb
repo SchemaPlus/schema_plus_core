@@ -27,9 +27,17 @@ module SchemaPlus
             end
           end
 
-          def index(column_name, options = {})
-            SchemaMonkey::Middleware::Migration::Index.start(caller: self, operation: :define, table_name: self.name, column_names: column_name, options: options.deep_dup) do |env|
-              super env.column_names, env.options
+          if Gem::Version.new(::ActiveRecord::VERSION::STRING) < Gem::Version.new('6.1')
+            def index(column_name, options = {})
+              SchemaMonkey::Middleware::Migration::Index.start(caller: self, operation: :define, table_name: self.name, column_names: column_name, options: options.deep_dup) do |env|
+                super env.column_names, env.options
+              end
+            end
+          else
+            def index(column_name, **options)
+              SchemaMonkey::Middleware::Migration::Index.start(caller: self, operation: :define, table_name: self.name, column_names: column_name, options: options.deep_dup) do |env|
+                super env.column_names, **env.options
+              end
             end
           end
         end

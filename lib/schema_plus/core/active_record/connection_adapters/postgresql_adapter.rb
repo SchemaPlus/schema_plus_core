@@ -12,9 +12,17 @@ module SchemaPlus
             end
           end
 
-          def add_index(table_name, column_names, options = {})
-            SchemaMonkey::Middleware::Migration::Index.start(caller: self, operation: :add, table_name: table_name, column_names: column_names, options: options.deep_dup) do |env|
-              super env.table_name, env.column_names, **env.options
+          if Gem::Version.new(::ActiveRecord::VERSION::STRING) < Gem::Version.new('6.1')
+            def add_index(table_name, column_names, options = {})
+              SchemaMonkey::Middleware::Migration::Index.start(caller: self, operation: :add, table_name: table_name, column_names: column_names, options: options.deep_dup) do |env|
+                super env.table_name, env.column_names, env.options
+              end
+            end
+          else
+            def add_index(table_name, column_names, **options)
+              SchemaMonkey::Middleware::Migration::Index.start(caller: self, operation: :add, table_name: table_name, column_names: column_names, options: options.deep_dup) do |env|
+                super env.table_name, env.column_names, **env.options
+              end
             end
           end
 
@@ -30,15 +38,15 @@ module SchemaPlus
             end
           end
 
-          def exec_cache(sql, name, binds)
-            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, query_name: name, binds: binds) { |env|
-              env.result = super env.sql, env.query_name, env.binds
+          def exec_cache(sql, name, binds, **options)
+            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, query_name: name, binds: binds, options: options) { |env|
+              env.result = super env.sql, env.query_name, env.binds, **env.options
             }.result
           end
 
-          def exec_no_cache(sql, name, binds)
-            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, query_name: name, binds: binds) { |env|
-              env.result = super env.sql, env.query_name, env.binds
+          def exec_no_cache(sql, name, binds, **options)
+            SchemaMonkey::Middleware::Query::Exec.start(connection: self, sql: sql, query_name: name, binds: binds, options: options) { |env|
+              env.result = super env.sql, env.query_name, env.binds, **env.options
             }.result
           end
 
