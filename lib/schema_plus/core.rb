@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "schema_monkey"
+require 'active_support/core_ext/array/wrap'
 require "pathname"
 
 module SchemaPlus

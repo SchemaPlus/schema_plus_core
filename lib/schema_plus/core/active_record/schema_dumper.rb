@@ -32,12 +32,24 @@ module SchemaPlus
           @dump.trailer = stream.string
         end
 
-        def extensions(_)
+        def header(_)
           SchemaMonkey::Middleware::Dumper::Initial.start(dumper: self, connection: @connection, dump: @dump, initial: @dump.initial) do |env|
             stream = StringIO.new
             super stream
-            env.dump.initial << stream.string unless stream.string.blank?
+            env.dump.header = stream.string
           end
+        end
+
+        def extensions(_)
+          stream = StringIO.new
+          super stream
+          @dump.extensions << stream.string unless stream.string.blank?
+        end
+
+        def types(_)
+          stream = StringIO.new
+          super stream
+          @dump.types << stream.string unless stream.string.blank?
         end
 
         def tables(_)

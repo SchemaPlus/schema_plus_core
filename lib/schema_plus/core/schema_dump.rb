@@ -5,13 +5,16 @@ module SchemaPlus
     class SchemaDump
       include TSort
 
-      attr_reader :initial, :tables, :dependencies, :data
-      attr_accessor :final, :trailer
+      attr_reader :initial, :extensions, :types, :tables, :dependencies, :data
+      attr_accessor :header, :final, :trailer
 
       def initialize(dumper)
         @dumper = dumper
         @dependencies = Hash.new { |h, k| h[k] = [] }
+        @header = ''
         @initial = []
+        @extensions = []
+        @types = []
         @tables = {}
         @final = []
         @data = OpenStruct.new # a place for middleware to leave data
@@ -23,7 +26,10 @@ module SchemaPlus
       end
 
       def assemble(stream)
+        stream.puts @header
         stream.puts @initial.join("\n") if initial.any?
+        stream.puts @extensions.join("\n") if extensions.any?
+        stream.puts @types.join("\n") if types.any?
         assemble_tables(stream)
         final.each do |statement|
           stream.puts "  #{statement}"

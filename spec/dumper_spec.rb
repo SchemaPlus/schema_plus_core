@@ -46,16 +46,14 @@ describe SchemaMonkey::Middleware::Dumper do
 
   let(:migration) { ::ActiveRecord::Migration }
 
-  TestCustomType = SchemaDev::Rspec::Helpers.postgresql?
-
-  around(:each) do |example|
+  around(postgresql: :only) do |example|
     begin
-      migration.execute "CREATE TYPE custom_type AS ENUM ('a', 'b')";
+      migration.execute "CREATE TYPE custom_type AS ENUM ('a', 'b')"
       example.run
     ensure
       migration.execute "DROP TYPE IF EXISTS custom_type CASCADE";
     end
-  end if TestCustomType
+  end
 
   before(:each) do
     migration.create_table "things" do |t|
@@ -66,7 +64,10 @@ describe SchemaMonkey::Middleware::Dumper do
       t.references :thing
     end
     migration.add_foreign_key("other", "things")
-    migration.execute "CREATE TABLE custom_table ( my_column custom_type DEFAULT 'a'::custom_type NOT NULL)" if TestCustomType
+  end
+
+  before(postgresql: :only) do
+    migration.execute "CREATE TABLE custom_table ( my_column custom_type DEFAULT 'a'::custom_type NOT NULL)"
   end
 
   context "column default expressions", postgresql: :only do
@@ -79,7 +80,7 @@ describe SchemaMonkey::Middleware::Dumper do
   end
 
   context TestDumper::Middleware::Dumper::Initial do
-    Then { expect(dump).to match(/Schema[.]define.*do\s+#{middleware}/) }
+    Then { expect(dump).to match(/Schema([\[\].0-9]+)?[.]define.*do\s+#{middleware}/) }
   end
 
   context TestDumper::Middleware::Dumper::Tables do
@@ -112,7 +113,14 @@ describe SchemaMonkey::Middleware::Dumper do
   context TestDumper::Middleware::Dumper::Table do
     Then { expect(dump).to match(/t[.]integer.*:option=>"#{middleware}" \# comment: #{middleware}/) }
     Then { expect(dump).to match(/statement: #{middleware}\s+end\s+(add_index.*)?\s+trailer: #{middleware}/) }
-    Then { expect(dump).to match(/could not dump table.*custom_table.*unknown type.*custom_type/mi) } if TestCustomType
+
+    Then(postgresql: :only, rails: '< 7.0') {
+      expect(dump).to match(/could not dump table.*custom_table.*unknown type.*custom_type/mi)
+    }
+    Then(postgresql: :only, rails: '>= 7.0') {
+      expect(dump).to match(/create_enum.+custom_type/mi)
+    }
+
     Then { expect(dump).to match(/t[.]index.*:option=>"#{middleware}"/) }
   end
 
