@@ -22,9 +22,11 @@ jobs:
         - '2.5'
         - '2.7'
         - '3.0'
+        - '3.1'
         activerecord:
         - '5.2'
         - '6.0'
+        - '7.0'
         db:
         - mysql2
         - sqlite3
@@ -34,6 +36,10 @@ jobs:
         exclude:
         - ruby: '3.0'
           activerecord: '5.2'
+        - ruby: '3.1'
+          activerecord: '5.2'
+        - ruby: '2.5'
+          activerecord: '7.0'
         - db: skip
           dbversion: skip
         include:
@@ -53,8 +59,24 @@ jobs:
           activerecord: '6.0'
           db: postgresql
           dbversion: '9.6'
+        - ruby: '2.7'
+          activerecord: '7.0'
+          db: postgresql
+          dbversion: '9.6'
         - ruby: '3.0'
           activerecord: '6.0'
+          db: postgresql
+          dbversion: '9.6'
+        - ruby: '3.0'
+          activerecord: '7.0'
+          db: postgresql
+          dbversion: '9.6'
+        - ruby: '3.1'
+          activerecord: '6.0'
+          db: postgresql
+          dbversion: '9.6'
+        - ruby: '3.1'
+          activerecord: '7.0'
           db: postgresql
           dbversion: '9.6'
     env:

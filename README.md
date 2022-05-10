@@ -27,7 +27,11 @@ SchemaPlus::Core is tested on:
 * ruby **2.5** with activerecord **6.0**, using **postgresql:9.6**, **mysql2** or **sqlite3**
 * ruby **2.7** with activerecord **5.2**, using **postgresql:9.6**, **mysql2** or **sqlite3**
 * ruby **2.7** with activerecord **6.0**, using **postgresql:9.6**, **mysql2** or **sqlite3**
+* ruby **2.7** with activerecord **7.0**, using **postgresql:9.6**, **mysql2** or **sqlite3**
 * ruby **3.0** with activerecord **6.0**, using **postgresql:9.6**, **mysql2** or **sqlite3**
+* ruby **3.0** with activerecord **7.0**, using **postgresql:9.6**, **mysql2** or **sqlite3**
+* ruby **3.1** with activerecord **6.0**, using **postgresql:9.6**, **mysql2** or **sqlite3**
+* ruby **3.1** with activerecord **7.0**, using **postgresql:9.6**, **mysql2** or **sqlite3**
 
 <!-- SCHEMA_DEV: MATRIX - end -->
 
