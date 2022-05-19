@@ -451,29 +451,30 @@ SchemaPlus::Core provides a state object and of callbacks to various phases of t
 
 ## Release Notes
 
-* 3.0.0 Drop AR < 5.2 and add AR 6.0 support. Drop Ruby < 2.5 and add Ruby 3.0 support.
-* 2.2.3 Fix dumping complex expression based indexes in AR 5.x
-* 2.2.2 Fixed dumping tables in postgresql in AR 5.2 when the PK is not a bigint.
-* 2.2.1 Fixed expression index handling in AR5.x.
-* 2.2.0 Added AR5.2 support.  Thanks to [@jeremyyap](https://github.com/jeremyyap)
-* 2.1.1 Bug fix: Don't lose habtm options.  Thanks to [@iagopiimenta ](https://github.com/iagopiimenta)
-* 2.1.0 Added AR5.1 support.  Thanks to [@iagopiimenta ](https://github.com/iagopiimenta)
-* 2.0.1 Tighten up AR dependency.  Thanks to [@myabc](https://github.com/myabc).
-* 2.0.0 Added AR5 support, removed AR4.2 support.  Thanks to [@boazy](https://github.com/boazy).
-* 1.0.2 Missing require
-* 1.0.1 Explicit gem dependencies
-* 1.0.0 Clean up `SchemaDump::Table::Column` and `SchemaDump::Table::Index` API:  `#options` is now a hash and `#comments` is now an array; no longer have `add_option` and `add_comment` methods.
-* 0.6.2 Bug fix: don't choke on INHERITANCE in table definition (#7).  Thanks to [@ADone](https://github.com/ADone).
-* 0.6.1 Make sure to require pathname (#5)
-* 0.6.0 Added `table.alt` to dumper; Bug fix: Don't crash when AR fails to dump a table. Thanks to [@stenver](https://github.com/stenver) for tracking it down
-* 0.5.1 Bug fix: Don't choke on a quoted newline in a `CREATE TABLE` statement ([#3](https://github.com/SchemaPlus/schema_plus_core/pull/3)).  Thanks to [@mikeauclair](https://github.com/mikeauclair)
-* 0.5.0 Added `Migration::DropTable`
-* 0.4.0 Added `implements_reference` to `Migration::Column` stack env
-* 0.3.1 Pass along (undocumented) return values from association declarations ([#2](https://github.com/SchemaPlus/schema_plus_core/pull/2)).  Thanks to [@lowjoel](https://github.com/lowjoel)
-* 0.3.0 Added `Model::Association::Declaration` ([#1](https://github.com/SchemaPlus/schema_plus_core/pull/1)).  Thanks to [@lowjoel](https://github.com/lowjoel).
-* 0.2.1 Added `Migration::CreateTable` and `Schema::Define`; removed dependency on (defunct) `schema_monkey_rails` gem.  [Oops, this should have been a minor version bump]
-* 0.2.0 Added `Migration::DropTable`
-* 0.1.0 Initial release
+* **3.1.0** Add AR 6.1 and 7.0, add Ruby 3.1
+* **3.0.0** Drop AR < 5.2 and add AR 6.0 support. Drop Ruby < 2.5 and add Ruby 3.0 support.
+* **2.2.3** Fix dumping complex expression based indexes in AR 5.x
+* **2.2.2** Fixed dumping tables in postgresql in AR 5.2 when the PK is not a bigint.
+* **2.2.1** Fixed expression index handling in AR5.x.
+* **2.2.0** Added AR5.2 support.  Thanks to [@jeremyyap](https://github.com/jeremyyap)
+* **2.1.1** Bug fix: Don't lose habtm options.  Thanks to [@iagopiimenta ](https://github.com/iagopiimenta)
+* **2.1.0** Added AR5.1 support.  Thanks to [@iagopiimenta ](https://github.com/iagopiimenta)
+* **2.0.1** Tighten up AR dependency.  Thanks to [@myabc](https://github.com/myabc).
+* **2.0.0** Added AR5 support, removed AR4.2 support.  Thanks to [@boazy](https://github.com/boazy).
+* **1.0.2** Missing require
+* **1.0.1** Explicit gem dependencies
+* **1.0.0** Clean up `SchemaDump::Table::Column` and `SchemaDump::Table::Index` API:  `#options` is now a hash and `#comments` is now an array; no longer have `add_option` and `add_comment` methods.
+* **0.6.2** Bug fix: don't choke on INHERITANCE in table definition (#7).  Thanks to [@ADone](https://github.com/ADone).
+* **0.6.1** Make sure to require pathname (#5)
+* **0.6.0** Added `table.alt` to dumper; Bug fix: Don't crash when AR fails to dump a table. Thanks to [@stenver](https://github.com/stenver) for tracking it down
+* **0.5.1** Bug fix: Don't choke on a quoted newline in a `CREATE TABLE` statement ([#3](https://github.com/SchemaPlus/schema_plus_core/pull/3)).  Thanks to [@mikeauclair](https://github.com/mikeauclair)
+* **0.5.0** Added `Migration::DropTable`
+* **0.4.0** Added `implements_reference` to `Migration::Column` stack env
+* **0.3.1** Pass along (undocumented) return values from association declarations ([#2](https://github.com/SchemaPlus/schema_plus_core/pull/2)).  Thanks to [@lowjoel](https://github.com/lowjoel)
+* **0.3.0** Added `Model::Association::Declaration` ([#1](https://github.com/SchemaPlus/schema_plus_core/pull/1)).  Thanks to [@lowjoel](https://github.com/lowjoel).
+* **0.2.1** Added `Migration::CreateTable` and `Schema::Define`; removed dependency on (defunct) `schema_monkey_rails` gem.  [Oops, this should have been a minor version bump]
+* **0.2.0** Added `Migration::DropTable`
+* **0.1.0** Initial release
 
 ## Development & Testing
 
