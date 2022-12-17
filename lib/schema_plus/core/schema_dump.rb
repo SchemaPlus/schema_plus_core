@@ -105,6 +105,11 @@ module SchemaPlus
               pr += ',' unless options.blank?
               stream.write "%-#{namelen+3}s " % pr
             end
+            if options[:default].is_a?(Proc)
+              default = options.delete(:default)
+              stream.write "default: -> { \"#{default.call}\" }, "
+              stream.write options.to_s.sub(/^{(.*)}$/, '\1') unless options.blank?
+            end
             stream.write options.to_s.sub(/^{(.*)}$/, '\1') unless options.blank?
             stream.write ' ' unless options.blank? or comments.blank?
             stream.write '# ' + comments.join('; ') unless comments.blank?
