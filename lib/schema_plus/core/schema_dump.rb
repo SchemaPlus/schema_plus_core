@@ -105,7 +105,7 @@ module SchemaPlus
               pr += ',' unless options.blank?
               stream.write "%-#{namelen+3}s " % pr
             end
-            if Gem::Version.new(ActiveRecord::VERSION::STRING) >= Gem::Version.new('5.0.0')
+            if Gem::Version.new(::ActiveRecord::VERSION::STRING) >= Gem::Version.new('5.0.0')
               if options[:default].is_a?(Proc) && 
                 default = options.delete(:default)
                 stream.write "default: -> { \"#{default.call}\" }"
